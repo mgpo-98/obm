@@ -5,5 +5,5 @@ from . import views
 app_name = 'img'
 
 urlpatterns =[
-    path('',vies.index, name='index'),
+    path('',views.index, name='index'),
 ]
