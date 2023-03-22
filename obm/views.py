@@ -2,6 +2,6 @@ from django.shortcuts import render
 
 
 
-def index(request):
+def main(request):
     pass
-    return render(request, 'index.html')
+    return render(request, 'main.html')
