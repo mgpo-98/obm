@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from .forms import DocumentForm
+import random
 # Create your views here.
 def index(request):
 
@@ -39,3 +40,16 @@ def create(request, item_id):
         'item_title': request.GET.get('item_title')
     }
     return render(request, 'img/form.html', context=context)
+
+
+def make_ladder(insert): #!ladder a b c d/1 1 2 2
+    #a b c d/1 1 2 2
+    key = (insert.split('/'))[0]
+    now_key = key.split()
+    value = (insert.split('/'))[1]
+    now_value = value.split()
+    if len(now_key) != len(now_value): #길이가 맞지 않을때 !! (짝이 맞지 않는 경우)
+        return False,False
+    else:
+        random.shuffle(now_value)
+        return now_key,now_value
