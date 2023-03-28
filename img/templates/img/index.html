@@ -3,10 +3,32 @@
 
 {% block content %}
 
-이미지 업로드 및 다운 
 
-<form action="" method="post" enctype="multipart/form-data">
-  {% csrf_token %} 
-  {{ form }}
+
+이미지 업로드 및 다운 
+<style>
+.button {
+  display: flex;
+  justify-content: center;
+}
+label {
+  cursor: pointer;
+  font-size: 1em;
+}
+
+/* 못생긴 기존 input 숨기기 */
+#chooseFile {
+  visibility: hidden;
+}
+</style>
+
+<form method="post" enctype="multipart/form-data">
+  <div class="button">
+      <label for="chooseFile">
+          👉 CLICK HERE! 👈
+      </label>
+  </div>
+  <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
 </form>
+
 {% endblock content %}
