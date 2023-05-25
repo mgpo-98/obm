@@ -8,4 +8,4 @@ class DocumentForm(forms.ModelForm):
     
     class Meta:
         model = Document
-        exclude = ['attached']
+        fields = ['image']
