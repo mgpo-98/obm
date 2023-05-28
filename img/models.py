@@ -4,7 +4,7 @@ from imagekit.models import  ProcessedImageField
 # Create your models here.
 import os
 
-class Document(models.Model):
+class Review(models.Model):
     image = ProcessedImageField(upload_to='img/zzal', blank=True,
                             processors=[ResizeToFill(1200, 960)],
                             format='JPEG',
