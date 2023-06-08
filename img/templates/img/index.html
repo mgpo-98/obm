@@ -2,16 +2,16 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-
-<form action="" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  {% bootstrap_form review_form %}
-  {% bootstrap_button button_type="submit" content="리뷰 등록" %}
-</form>
+<div>
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form review_form %}
+    {% bootstrap_button button_type="submit" content="리뷰 등록" %}
+  </form>
 
 이미지 업로드 및 다운 
 
-
+</div>
 
 
 
