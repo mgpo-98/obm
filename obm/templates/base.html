@@ -27,7 +27,7 @@
 </head>
 
 <body>
-
+  
   <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">OKING</a>
@@ -55,6 +55,8 @@
   </nav>
   {% block content %}
 {% endblock content %}
+
+<img src="{{ review.image.url }}" class="card-img-top" alt="..." style='height:278.4px; object-fit: cover;'>
 </body>
 
 </html>

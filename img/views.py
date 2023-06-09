@@ -9,11 +9,8 @@ def index(request):
   if request.method == 'POST':
         review_form = ReviewForm(request.POST, request.FILES)
         if review_form.is_valid():
-            review = review_form.save(commit=False)
-            review.user = request.user 
-            # 로그인한 유저 => 작성자네!
-            review.save()
-            return redirect('img:index')
+            review_form.save()
+            return redirect('/')
   else: 
         review_form = ReviewForm()
   context = {
