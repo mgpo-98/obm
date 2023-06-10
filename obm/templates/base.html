@@ -55,8 +55,10 @@
   </nav>
   {% block content %}
 {% endblock content %}
-
+{% for review in review %}
 <img src="{{ review.image.url }}" class="card-img-top" alt="..." style='height:278.4px; object-fit: cover;'>
+{{ review }}
+{% endfor %}
 </body>
 
 </html>
