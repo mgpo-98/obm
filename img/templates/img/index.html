@@ -12,7 +12,25 @@
 이미지 업로드 및 다운 
 
 </div>
-
+<body>
+  <p>
+    이미지 업로드 테스트 창
+  </p>
+  <div>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" id="imageInput" />
+    </form>
+    <hr />
+    <button onclick="upload()">
+      업로드
+    </button>
+    <hr />
+    <p>
+      업로드결과:
+    </p>
+    <p id="resultUploadPath"></p>
+  </div>
+  </body>
 
 
 {% endblock content %}
