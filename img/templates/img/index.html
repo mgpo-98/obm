@@ -26,7 +26,9 @@
     </button>
     <hr />
     <p>
-      업로드결과:
+      업로드결과: {% for i in review.image.all %}
+      <img src="{{ i.image.url }}" /><br />
+      {% endfor %}
     </p>
     <p id="resultUploadPath"></p>
   </div>
