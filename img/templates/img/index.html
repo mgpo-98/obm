@@ -10,6 +10,13 @@
   </form>
 
 이미지 업로드 및 다운 
+<p>
+  업로드결과: 
+  <img src="{{ image.url }}" /><br />
+  {% for i in image %}
+  <img src="{{ i.image.url }}" /><br />
+  {% endfor %}
+</p>
 
 </div>
 <body>
@@ -25,12 +32,7 @@
       업로드
     </button>
     <hr />
-    <p>
-      업로드결과: 
-      {% for i in image.image.all %}
-      <img src="{{ i.image.url }}" /><br />
-      {% endfor %}
-    </p>
+   
     <p id="resultUploadPath"></p>
   </div>
   </body>
