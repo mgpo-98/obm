@@ -28,7 +28,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+# 파일 유형 설정
+ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif']
+ALLOWED_GIF_EXTENSIONS = ['gif']
+MAX_IMAGE_UPLOAD_SIZE = 5242880  # 5 MB
+MAX_GIF_UPLOAD_SIZE = 10485760  # 10 MB
 # Application definition
 
 INSTALLED_APPS = [

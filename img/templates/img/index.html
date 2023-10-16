@@ -3,7 +3,7 @@
 
 {% block content %}
 <div>
-  <form action="" method="POST" enctype="multipart/form-data">
+  {% comment %} <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form review_form %}
     {% bootstrap_button button_type="submit" content="리뷰 등록" %}
@@ -35,7 +35,19 @@
    
     <p id="resultUploadPath"></p>
   </div>
-  </body>
-
+  </body> {% endcomment %}
+  
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.content.label_tag }}
+    {{ form.content }}
+    {{ form.image.label_tag }}
+    {{ form.image }}
+    {{ form.gif.label_tag }}
+    {{ form.gif }}
+    {{ form.hashtags.label_tag }}
+    {{ form.hashtags }}
+    <button type="submit">글 작성</button>
+</form>
 
 {% endblock content %}

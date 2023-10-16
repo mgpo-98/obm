@@ -1,12 +1,11 @@
 from django import forms
-from .models import Review
+from django.forms.widgets import ClearableFileInput
 
-
-class ReviewForm(forms.ModelForm):
-    upload = forms.FileField(label='첨부 파일', required=False, 
-          widget=forms.FileInput(attrs={'class': 'form'}))
-    
+class PostForm(forms.ModelForm):
     class Meta:
-        model = Review
-        fields = ['image']
-        
+        model = Post
+        fields = ['content', 'image', 'gif', 'hashtags']
+        widgets = {
+            'image': ClearableFileInput(attrs={'multiple': True}),
+            'gif': ClearableFileInput(attrs={'multiple': True}),
+        }
