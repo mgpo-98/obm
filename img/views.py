@@ -16,7 +16,7 @@ def index(request):
                     form.add_error(None, "이미지 또는 GIF를 업로드해야 합니다.")
                 else:
                     form.save()
-                    return redirect('')  # 글 목록 페이지로 리다이렉트
+                    return redirect('/image_list')  # 글 목록 페이지로 리다이렉트
     else:
         form = PostForm()   
     return render(request, 'img/index.html', {'form': form})
