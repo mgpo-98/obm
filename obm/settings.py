@@ -36,7 +36,7 @@ MAX_GIF_UPLOAD_SIZE = 10485760  # 10 MB
 # Application definition
 
 INSTALLED_APPS = [
-    'imgs',
+    
     "imagekit",
     'img',
     'django.contrib.admin',

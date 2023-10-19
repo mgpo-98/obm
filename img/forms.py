@@ -1,12 +1,7 @@
 from django import forms
-from .models import Post
-from django.forms.widgets import ClearableFileInput
+from .models import Image
 
-class PostForm(forms.ModelForm):
+class ImageUploadForm(forms.ModelForm):
     class Meta:
-        model = Post
-        fields = ['content', 'image', 'gif', 'hashtags']
-        widgets = {
-            'image': ClearableFileInput(attrs={'multiple': True}),
-            'gif': ClearableFileInput(attrs={'multiple': True}),
-        }
+        model = Image
+        fields = ['image', 'gif','tags']

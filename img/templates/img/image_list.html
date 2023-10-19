@@ -1,25 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>이미지 및 GIF 파일 목록</title>
-</head>
-<body>
-    <h1>이미지 파일 목록</h1>
-    <ul>
-        {% for post in image_posts %}
-            <li>
-                <img src="{{ post.image.url }}" alt="Image">
-            </li>
-        {% endfor %}
-    </ul>
 
-    <h1>GIF 파일 목록</h1>
-    <ul>
-        {% for post in gif_posts %}
-            <li>
-                <a href="{{ post.gif.url }}" target="_blank">View GIF</a>
-            </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+<ul>
+  {% for media_item in image_items %}
+    <li>
+      {% if media_item.image %}
+        <img src="{{ media_item.image.url }}" alt="이미지">
+      {% elif media_item.gif %}
+        <a href="{{ media_item.gif.url }}" download>다운로드 GIF</a>
+      {% endif %}
+      <p>해시태그: {{ media_item.tags }}</p>
+    </li>
+  {% endfor %}
+</ul>
