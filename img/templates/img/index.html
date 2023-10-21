@@ -4,7 +4,13 @@
 {% block content %}
 <form method="post" enctype="multipart/form-data">
   {% csrf_token %}
-  {{ form.as_p }}
+       <!-- Post content -->
+      {{ form.as_p }}
+       <br><br>
+       
+       <!-- Image upload -->
+       
+       {{ image_form.as_p}}
   <button type="submit">업로드</button>
 </form>
 {% endblock content %}
