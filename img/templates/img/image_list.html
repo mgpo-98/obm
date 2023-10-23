@@ -1,13 +1,19 @@
-
-<ul>
-  {% for media_item in image_items %}
-    <li>
-      {% if media_item.image %}
-        <img src="{{ media_item.image.url }}" alt="이미지">
-      {% elif media_item.gif %}
-        <a href="{{ media_item.gif.url }}" download>다운로드 GIF</a>
-      {% endif %}
-      <p>해시태그: {{ media_item.tags }}</p>
-    </li>
-  {% endfor %}
-</ul>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>이미지 목록</title>
+</head>
+<body>
+    <h1>이미지 목록</h1>
+    <ul>
+        {% for image in image_items %}
+            <li>
+                <img src="{{ image.image.url }}" alt="Image">
+                <p>해시태그: {% for hashtag in image.hashtags.all %}{{ hashtag.name }} {% endfor %}</p>
+            </li>
+        {% empty %}
+            <p>등록된 이미지가 없습니다.</p>
+        {% endfor %}
+    </ul>
+</body>
+</html>
