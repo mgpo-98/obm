@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>이미지 목록</title>
-</head>
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<form method="get" action="{% url 'img:search_images' %}">
+    <input type="text" name="search" placeholder="Search by hashtag">
+    <button type="submit">Search</button>
+</form>
 <body>
     <h1>이미지 목록</h1>
+   
     <ul>
         {% for image in image_items %}
             <li>
@@ -16,4 +20,5 @@
         {% endfor %}
     </ul>
 </body>
-</html>
+
+{% endblock content %}

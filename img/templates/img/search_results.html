@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="get" action="{% url 'img:search_images' %}">
+    <input type="text" name="search" placeholder="Search by hashtag">
+    <button type="submit">Search</button>
+</form>
+<h2>Search Results for "{{ search_query }}"</h2>
+<ul>
+    {% for image in images %}
+        <li>
+            <img src="{{ image.image.url }}" alt="{{ image.title }}">
+            <!-- 이미지 및 관련 정보 표시 -->
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

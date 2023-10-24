@@ -32,3 +32,9 @@ def index(request):
 def image_list(request):
     image_items = Image.objects.all()
     return render(request, 'img/image_list.html', {'image_items': image_items})
+
+
+def search_images(request):
+    search_query = request.GET.get('search')
+    images = Image.objects.filter(hashtags__name__icontains=search_query)  # 검색어를 포함하는 이미지를 필터링
+    return render(request, 'img/search_results.html', {'images': images, 'search_query': search_query})
