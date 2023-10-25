@@ -14,7 +14,7 @@ def index(request):
             hashtags = form.cleaned_data.get('hashtags', '').split()
             image.save()
             for tag in hashtags:
-                tag = tag.strip('#')
+                
                 hashtag, created = Hashtag.objects.get_or_create(name=tag)
                 image.hashtags.add(hashtag)
 

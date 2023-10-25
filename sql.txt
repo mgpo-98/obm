@@ -1,0 +1,6 @@
+-- database: c:\Users\조승윤\Documents\GitHub\obm\db.sqlite3
+
+-- 전체 파일을 실행하려면 창 오른쪽 상단의 ▷ 버튼을 누르십시오.
+
+SELECT * FROM "img_hashtag";
+DELETE  FROM "img_image" where id = '10';

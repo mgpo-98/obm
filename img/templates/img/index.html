@@ -10,24 +10,59 @@
 <body>
     <form id="image-upload-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        
-        <button type="button" id="extract-button">해시태그 추출</button>
-        <input type="submit" value="이미지 업로드 및 해시태그 저장">
+        <input type="file" name="image" id="image-input">
+        <input type="text" name="hashtags" id="hashtags-input" placeholder="해시태그를 추가하세요 (띄어쓰기로 구분)">
+        <button type="button" id="extract-hashtags-button">해시태그 추출</button>
+        <input type="submit" id="upload-button" value="이미지 업로드 및 해시태그 저장">
     </form>
 
-    <div id="hashtags"></div>
+    <div id="hashtag-list">
+        <!-- 해시태그가 여기에 추가될 것입니다. -->
+      </div>
 
     <script>
-        document.getElementById("extract-button").addEventListener("click", function () {
-            var text = document.getElementById("hashtags-input").value;
-            
+        const uploadForm = document.getElementById('extract-button');
+        const hashtagsInput = document.getElementById('hashtags-input');
+        const uploadButton = document.getElementById('upload-button');
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const extractButton = document.getElementById('extract-hashtags-button');
+            const hashtagsInput = document.getElementById('hashtags-input');
+            const hashtagList = document.getElementById("hashtag-list");
+        
+            extractButton.addEventListener('click', function() {
+                const inputText = hashtagsInput.value;
+                const hashtags = inputText.match(/#[^\s#]*/g);
+                console.log(hashtags);
+                hashtags.forEach(tag => {
+                    const hashtagElement = document.createElement("span");
+                    hashtagElement.textContent = tag;
+                    hashtagList.appendChild(hashtagElement);
+                  });
+                // 추출한 해시태그를 처리하는 코드를 여기에 추가
+            });
+        });
 
-            if (text) {
-                document.getElementById("hashtags").innerHTML = "추출된 해시태그: " + hashtags.join(", ");
-            } else {
-                document.getElementById("hashtags").innerHTML = "해시태그가 없습니다.";
+        uploadForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const formData = new FormData(uploadForm);
+            const hashtags = hashtagsInput.value.split(' ');
+            formData.delete('hashtags'); // 기존 'hashtags' 필드 삭제
+            for (let i = 0; i < hashtags.length; i++) {
+                formData.append('hashtags', hashtags[i]); // 각 해시태그를 새로운 'hashtags' 필드로 추가
             }
+        
+            fetch('/img', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 업로드 성공 후의 동작을 정의하세요.
+            })
+            .catch(error => {
+                console.error('업로드 중 오류 발생: ', error);
+            });
         });
     </script>
 </body>
