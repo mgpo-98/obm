@@ -2,6 +2,15 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
+<style>
+    .hashtags {
+        margin-top: 5px; /* 원하는 간격으로 조정하세요 */
+    }
+
+    .hashtags span {
+        margin-right: 5px; /* 해시태그 사이의 간격을 조정하세요 */
+    }
+</style>
 <form method="get" action="{% url 'img:search_images' %}">
     <input type="text" name="search" placeholder="Search by hashtag">
     <button type="submit">Search</button>
@@ -13,7 +22,11 @@
         {% for image in image_items %}
             <li>
                 <img src="{{ image.image.url }}" alt="Image">
-                <p>해시태그: {% for hashtag in image.hashtags.all %}{{ hashtag.name }} {% endfor %}</p>
+                <div class="hashtags">
+                <p>해시태그: {% for hashtag in image.hashtags.all %}
+                    <span>{{ hashtag.name }} </span>
+                        {% endfor %}</p>
+                </div>
             </li>
         {% empty %}
             <p>등록된 이미지가 없습니다.</p>

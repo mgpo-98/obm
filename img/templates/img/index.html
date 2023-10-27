@@ -9,60 +9,60 @@
     {% csrf_token %}
     <input type="file" name="image" id="image-input">
     <input type="text" name="hashtags" id="hashtags-input" placeholder="해시태그를 추가하세요 (띄어쓰기로 구분)">
-    <button type="button" id="extract-hashtags-button">해시태그 추출</button>
+    <button type="button" id="add-hashtag-button">해시태그 추가</button>
     <input type="submit" id="upload-button" value="이미지 업로드 및 해시태그 저장">
-</form>
+    <ul id="hashtag-list">
+        <!-- 해시태그 목록이 여기에 추가될 것입니다. -->
+      </ul>
+</form> 
+<a href="{% url 'img:image_list' %}">이미지 목록 보기</a>
 
-<div id="hashtag-list">
-    <!-- 해시태그가 여기에 추가될 것입니다. -->
-    </div>
+
 
 <script>
-    const uploadForm = document.getElementById('image-upload-form');
-    const hashtagsInput = document.getElementById('hashtags-input');
-    const uploadButton = document.getElementById('upload-button');
-    const hashtagList = document.getElementById("hashtag-list");
     document.addEventListener('DOMContentLoaded', function() {
-        const extractButton = document.getElementById('extract-hashtags-button');
+        const addHashtagButton = document.getElementById('add-hashtag-button');
         const hashtagsInput = document.getElementById('hashtags-input');
         const hashtagList = document.getElementById("hashtag-list");
     
-        extractButton.addEventListener('click', function() {
-            const inputText = hashtagsInput.value;
-            const hashtags = inputText.match(/#[^\s#]*/g);
-            console.log(hashtags);
-            hashtags.forEach(tag => {
-                const hashtagElement = document.createElement("span");
-                hashtagElement.textContent = tag;
+        addHashtagButton.addEventListener('click', function() {
+            const hashtag = hashtagsInput.value.trim();
+            if (hashtag) {
+                const hashtagElement = document.createElement("li");
+                hashtagElement.textContent = hashtag;
                 hashtagList.appendChild(hashtagElement);
-                });
-            // 추출한 해시태그를 처리하는 코드를 여기에 추가
+                hashtagsInput.value = ''; // 입력 필드 지우기
+            }
         });
-    });
-
-    uploadForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const formData = new FormData(uploadForm);
-        const hashtags = [];
-        const hashtagElements = hashtagList.getElementsByTagName('span');
+    
+        const uploadForm = document.getElementById('image-upload-form');
+        uploadForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const hashtags = [];
+            const hashtagElements = hashtagList.getElementsByTagName('li');
+            for (const hashtagElement of hashtagElements) {
+                hashtags.push(hashtagElement.textContent);
+            }
+            const hashtagsInput = document.createElement('input');
+            hashtagsInput.type = 'hidden';
+            hashtagsInput.name = 'hashtags';
+            hashtagsInput.value = JSON.stringify(hashtags);
+            uploadForm.appendChild(hashtagsInput);
         
-        console.log(hashtagElements);
-        for (const hashtagElement of hashtagElements) {
-            hashtags.push(hashtagElement.textContent);
-        }
-        formData.set('hashtags', hashtags.join(' ')); // 폼 데이터에 해시태그 추가
-        console.log(formData);
-        fetch('/img/', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('1');
-            // 업로드 성공 후의 동작을 정의하세요.
-        })
-        .catch(error => {
-            console.error('업로드 중 오류 발생: ', error);
+            // 이미지 업로드 및 해시태그 등록 요청을 보냅니다.
+            fetch('/img/', {
+                method: 'POST',
+                body: new FormData(uploadForm),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('업로드 성공');
+                // 업로드 성공 시 이미지 리스트 페이지로 리디렉션합니다.
+                window.location.href = '{% url "img:image_list" %}';
+            })
+            .catch(error => {
+                console.error('업로드 중 오류 발생: ', error);
+            });
         });
     });
 </script>
