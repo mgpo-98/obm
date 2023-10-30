@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
-from .models import Image, Hashtag
+from .models import Image, Hashtag, SearchHistory
 from .forms import ImageUploadForm
 from django.http import JsonResponse
 # Create your views here.
@@ -36,7 +36,14 @@ def image_list(request):
 
 
 def search_images(request):
-    search_query = request.GET.get('search')
-    images = Image.objects.filter(hashtags__name__icontains=search_query)  # 검색어를 포함하는 이미지를 필터링
-    return render(request, 'img/search_results.html', {'images': images, 'search_query': search_query})
+    query = request.GET.get('search')
+    if query:
+        # 검색 내역 저장
+        SearchHistory.objects.create(query=query)
+        results = YourModel.objects.filter(title__icontains=query)
+    else:
+        results = YourModel.objects.all()
+    images = Image.objects.filter(hashtags__name__icontains=query)  # 검색어를 포함하는 이미지를 필터링
+    return render(request, 'img/search_results.html', {'images': images, 'query': query})
+
 

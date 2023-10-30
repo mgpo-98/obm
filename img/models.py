@@ -9,3 +9,10 @@ class Hashtag(models.Model):
 
     def __str__(self):
         return self.name
+    
+class SearchHistory(models.Model):
+    query = models.CharField(max_length=255)
+    search_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.query
