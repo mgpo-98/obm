@@ -10,6 +10,10 @@
         <li>
             <img src="{{ image.image.url }}" alt="{{ image.title }}">
             <!-- 이미지 및 관련 정보 표시 -->
+            <p>해시태그: {% for hashtag in image.hashtags.all %}
+                <span>{{ hashtag.name }} </span>
+                    {% endfor %}</p>
+            </div>
         </li>
     {% endfor %}
 </ul>

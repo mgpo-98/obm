@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from .models import Image, Hashtag, SearchHistory
 from .forms import ImageUploadForm
 from django.http import JsonResponse
+from django.utils import timezone
 # Create your views here.
 
 def index(request):
@@ -39,10 +40,11 @@ def search_images(request):
     query = request.GET.get('search')
     if query:
         # 검색 내역 저장
-        SearchHistory.objects.create(query=query)
-        results = YourModel.objects.filter(title__icontains=query)
+        current_time = timezone.now()
+        SearchHistory.objects.create(query=query, search_time=current_time)
+        results = Hashtag.objects.filter(name__icontains=query)
     else:
-        results = YourModel.objects.all()
+        results = Hashtag.objects.all()
     images = Image.objects.filter(hashtags__name__icontains=query)  # 검색어를 포함하는 이미지를 필터링
     return render(request, 'img/search_results.html', {'images': images, 'query': query})
 
