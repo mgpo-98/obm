@@ -32,6 +32,24 @@
             <p>등록된 이미지가 없습니다.</p>
         {% endfor %}
     </ul>
+    <h1>실시간 검색 순위</h1>
+    <ul>
+        {% for entry in search_history %}
+            <li>{{ entry.query }} ({{ entry.search_count }}회 검색)</li>
+        {% endfor %}
+    </ul>
+    <script>
+        function updateRanking() {
+            $.get('image_list/', function (data) {
+                // Update the ranking on the page
+                $('#image_list/').html(data);
+            });
+            
+        }
+    
+        // Update the ranking every 10 seconds
+        setInterval(updateRanking, 10000);
+    </script>
 </body>
 
 {% endblock content %}
