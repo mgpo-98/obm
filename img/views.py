@@ -5,6 +5,7 @@ from .models import Image, Hashtag, SearchHistory
 from .forms import ImageUploadForm
 from django.http import JsonResponse
 from django.utils import timezone
+from .utils import get_search_ranking
 # Create your views here.
 
 def index(request):
@@ -33,7 +34,8 @@ def index(request):
 
 def image_list(request):
     image_items = Image.objects.all()
-    return render(request, 'img/image_list.html', {'image_items': image_items})
+    search_ranking = get_search_ranking()
+    return render(request, 'img/image_list.html', {'image_items': image_items,'search_ranking': search_ranking})
 
 
 def search_images(request):
@@ -49,7 +51,7 @@ def search_images(request):
     return render(request, 'img/search_results.html', {'images': images, 'query': query})
 
 
-def search_ranking_view(request):
-    query = request.GET.get('search')
-    search_history = SearchHistory.objects.values('query').annotate(search_count=models.Count('query')).order_by('-search_count')[:10]
-    return render(request, 'img/image_list.html', {'search_history': search_history, 'query': query})
+# def search_ranking_view(request):
+#     query = request.GET.get('search')
+#     search_history = SearchHistory.objects.values('query').annotate(search_count=models.Count('query')).order_by('-search_count')[:10]
+#     return render(request, 'img/image_list.html', {'search_history': search_history, 'query': query})

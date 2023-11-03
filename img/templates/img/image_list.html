@@ -34,22 +34,28 @@
     </ul>
     <h1>실시간 검색 순위</h1>
     <ul>
+        
         {% for entry in search_history %}
-            <li>{{ entry.query }} ({{ entry.search_count }}회 검색)</li>
+            <li >{{ entry }} </li>
         {% endfor %}
     </ul>
+    <div id="search-ranking">
+        <!-- 실시간 검색 순위가 여기에 나타날 것입니다. -->
+    </div>
+    {% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function updateRanking() {
-            $.get('image_list/', function (data) {
+            $.get('/', function (data) {
+                
                 // Update the ranking on the page
-                $('#image_list/').html(data);
+                $('#search-ranking').html(data);
             });
             
         }
     
         // Update the ranking every 10 seconds
         setInterval(updateRanking, 10000);
-    </script>
+    </script> {% endcomment %}
 </body>
 
 {% endblock content %}
