@@ -32,30 +32,31 @@
             <p>등록된 이미지가 없습니다.</p>
         {% endfor %}
     </ul>
-    <h1>실시간 검색 순위</h1>
-    <ul>
+    <h1 >실시간 검색 순위</h1>
+    <ul id="search-ranking-list">
         
-        {% for entry in search_history %}
-            <li >{{ entry }} </li>
+        {% for entry in search_ranking  %}
+        <li>{{ entry.query }} ({{ entry.search_count }}회 검색)</li>
         {% endfor %}
     </ul>
-    <div id="search-ranking">
+    <div id="search-ranking-list">
         <!-- 실시간 검색 순위가 여기에 나타날 것입니다. -->
-    </div>
-    {% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </div> 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function updateRanking() {
-            $.get('/', function (data) {
-                
+            $.get('{% url "img:image_list" %}', function (data) {
+                var searchRankingHtml = $(data).find("#search-ranking-list").html();
                 // Update the ranking on the page
-                $('#search-ranking').html(data);
+                console.log(searchRankingHtml);
+                $('#search-ranking-list').html(searchRankingHtml);
             });
-            
+            updateRanking();
         }
     
         // Update the ranking every 10 seconds
         setInterval(updateRanking, 10000);
-    </script> {% endcomment %}
+    </script> 
 </body>
 
 {% endblock content %}
