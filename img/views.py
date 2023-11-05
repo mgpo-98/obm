@@ -36,13 +36,15 @@ def index(request):
 #     search_history = SearchHistory.objects.values('query').annotate(search_count=models.Count('query')).order_by('-search_count')[:10]
 #     return render(request, 'img/image_list.html', {'search_history': search_history, 'query': query})
 
-def get_search_ranking():
-    ranking = SearchHistory.objects.values('query').annotate(search_count=Count('query')).order_by('-search_count')
-    return ranking
+
+def search_ranking(request):
+    search_history = SearchHistory.objects.values('query').annotate(search_count=Count('query')).order_by('-search_count')[:10]
+    ranking_data = [{'query': entry['query'], 'search_count': entry['search_count']} for entry in search_history]
+    return JsonResponse(ranking_data, safe=False)
 
 def image_list(request):
     image_items = Image.objects.all()
-    search_ranking = get_search_ranking()
+    search_ranking = search_ranking()
     return render(request, 'img/image_list.html', {'image_items': image_items,'search_ranking': search_ranking})
 
 
