@@ -32,38 +32,30 @@
             <p>등록된 이미지가 없습니다.</p>
         {% endfor %}
     </ul>
-    <h1 >실시간 검색 순위</h1>
-    <ul id="search-ranking-list">
-        
-        {% for entry in search_ranking  %}
-        <li>{{ entry.query }} ({{ entry.search_count }}회 검색)</li>
+    <h1>실시간 검색 순위</h1>
+    <ul id="search-ranking">
+        {% for entry in search_history %}
+            <li>{{ entry.query }} ({{ entry.search_count }}회 검색)</li>
         {% endfor %}
     </ul>
-    <div id="search-ranking">
-        <!-- 실시간 검색 순위가 여기에 나타날 것입니다. -->
-    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        function updateRanking() {
-            $.get('{% url "img:image_list" %}', function (data) {
-                var rankingHtml = '<h1>실시간 검색 순위</h1><ul>';
-                for (var i = 0; i < data.length; i++) {
-                    rankingHtml += '<li>' + data[i].query + ' (' + data[i].search_count + '회 검색)</li>';
-                }
-                rankingHtml += '</ul>';
-    
-                // Update the ranking on the page
-                $('#search-ranking').html(rankingHtml);
-            });
-        }
-    
-        // Initially load the ranking
-        updateRanking();
-    
-        // Update the ranking every 10 seconds
-        setInterval(updateRanking, 10000);
-    </script>
-    </script> 
+<script>
+    function updateRanking() {
+        $.get('{% url "img:image_list" %}', function (data) {
+            var searchRankingHtml = $(data).find("#search-ranking").html();
+            var rankingContainer = $('#search-ranking');
+            rankingContainer.html(searchRankingHtml);
+            console.log(searchRankingHtml);
+        });
+    }
+
+    // 페이지 로딩 후 초기 업데이트
+    updateRanking();
+
+    // 1분(60,000 밀리초)마다 업데이트
+    setInterval(updateRanking, 1000);
+</script>
 </body>
 
 {% endblock content %}

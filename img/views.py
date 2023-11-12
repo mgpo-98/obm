@@ -6,6 +6,10 @@ from .forms import ImageUploadForm
 from django.http import JsonResponse
 from django.utils import timezone
 from django.db.models import Count
+from django.core.serializers import serialize
+from django.db.models.query import QuerySet
+from django.core.serializers.json import DjangoJSONEncoder
+from django.forms.models import model_to_dict
 # Create your views here.
 
 def index(request):
@@ -31,21 +35,16 @@ def index(request):
     }
     return render(request, 'img/index.html', context)
 
-# def get_search_ranking(request):
-#     query = request.GET.get('search')
-#     search_history = SearchHistory.objects.values('query').annotate(search_count=models.Count('query')).order_by('-search_count')[:10]
-#     return render(request, 'img/image_list.html', {'search_history': search_history, 'query': query})
 
-
-def search_ranking(request):
-    search_history = SearchHistory.objects.values('query').annotate(search_count=Count('query')).order_by('-search_count')[:10]
-    ranking_data = [{'query': entry['query'], 'search_count': entry['search_count']} for entry in search_history]
-    return JsonResponse(ranking_data, safe=False)
 
 def image_list(request):
     image_items = Image.objects.all()
-    search_ranking = search_ranking()
-    return render(request, 'img/image_list.html', {'image_items': image_items,'search_ranking': search_ranking})
+    search_history = SearchHistory.objects.values('query').annotate(search_count=Count('query')).order_by('-search_count')[:10]
+    search_history_list = [model_to_dict(item) for item in search_history]
+    search_history_json = serialize('json', search_history, cls=DjangoJSONEncoder)
+    print(search_history_list)
+    data = {'image_items': image_items, 'search_history': search_history_list}
+    return JsonResponse(data, safe=False)
 
 
 def search_images(request):
