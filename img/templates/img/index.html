@@ -38,11 +38,10 @@
         const uploadForm = document.getElementById('image-upload-form');
         uploadForm.addEventListener('submit', function(event) {
             event.preventDefault();
-            const hashtags = [];
-            const hashtagElements = hashtagList.getElementsByTagName('li');
-            for (const hashtagElement of hashtagElements) {
-                hashtags.push(hashtagElement.textContent);
-            }
+            const hashtags = Array.from(hashtagList.getElementsByTagName('li'))
+            .map(hashtagElement => hashtagElement.textContent)
+            .join(', ');
+            
             const hashtagsInput = document.createElement('input');
             hashtagsInput.type = 'hidden';
             hashtagsInput.name = 'hashtags';

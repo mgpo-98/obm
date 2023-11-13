@@ -17,7 +17,16 @@
 </form>
 <body>
     <h1>이미지 목록</h1>
-   
+    <form method="get" action="{% url 'img:image_list' %}">
+        <label for="items_per_page">페이지당 이미지 수:</label>
+        <select name="items_per_page" id="items_per_page">
+            <option value="25" {% if items_per_page == 25 %}selected{% endif %}>25</option>
+            <option value="50" {% if items_per_page == 50 %}selected{% endif %}>50</option>
+            <option value="75" {% if items_per_page == 70 %}selected{% endif %}>75</option>
+            <option value="100" {% if items_per_page == 100 %}selected{% endif %}>100</option>
+        </select>
+        <input type="submit" value="적용">
+    </form>
     <ul>
         {% for image in image_items %}
             <li>
@@ -38,24 +47,23 @@
             <li>{{ entry.query }} ({{ entry.search_count }}회 검색)</li>
         {% endfor %}
     </ul>
+    <div class="pagination">
+        <span class="step-links">
+            {% if image_items.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ image_items.previous_page_number }}">previous</a>
+            {% endif %}
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    function updateRanking() {
-        $.get('{% url "img:image_list" %}', function (data) {
-            var searchRankingHtml = $(data).find("#search-ranking").html();
-            var rankingContainer = $('#search-ranking');
-            rankingContainer.html(searchRankingHtml);
-            console.log(searchRankingHtml);
-        });
-    }
+            <span class="current">
+                Page {{ image_items.number }} of {{ image_items.paginator.num_pages }}.
+            </span>
 
-    // 페이지 로딩 후 초기 업데이트
-    updateRanking();
-
-    // 1분(60,000 밀리초)마다 업데이트
-    setInterval(updateRanking, 1000);
-</script>
+            {% if image_items.has_next %}
+                <a href="?page={{ image_items.next_page_number }}">next</a>
+                <a href="?page={{ image_items.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 </body>
 
 {% endblock content %}

@@ -17,4 +17,10 @@
         </li>
     {% endfor %}
 </ul>
+<h1>실시간 검색 순위</h1>
+<ul id="search-ranking">
+    {% for entry in search_history %}
+        <li>{{ entry.query }} ({{ entry.search_count }}회 검색)</li>
+    {% endfor %}
+</ul>
 {% endblock %}
