@@ -1,0 +1,13 @@
+.profile{
+    border-radius:50%; 
+    width : 100px; 
+    height : 100px; 
+    object-fit: cover;
+}
+
+.rectangle {
+    width: 200px; /* 너비 설정 */
+    height: 100px; /* 높이 설정 */
+    border: 2px solid #333; /* 테두리 스타일 및 색상 설정 */
+    background-color: #f0f0f0; /* 배경 색상 설정 */
+}

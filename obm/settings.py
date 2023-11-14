@@ -129,7 +129,7 @@ USE_TZ = False
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'templates')
+    os.path.join(BASE_DIR, 'static'),  # 정적 파일이 위치한 디렉토리를 추가
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
