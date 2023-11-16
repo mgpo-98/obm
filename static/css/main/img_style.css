@@ -44,3 +44,11 @@ h1, p {
 .line{
     display: flex;
 }
+
+.hashtags {
+    margin-top: 5px; /* 원하는 간격으로 조정하세요 */
+}
+
+.hashtags span {
+    margin-right: 5px; /* 해시태그 사이의 간격을 조정하세요 */
+}

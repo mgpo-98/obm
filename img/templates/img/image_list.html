@@ -1,69 +1,97 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
-
+{% load static %}
 {% block content %}
-<style>
-    .hashtags {
-        margin-top: 5px; /* 원하는 간격으로 조정하세요 */
-    }
 
-    .hashtags span {
-        margin-right: 5px; /* 해시태그 사이의 간격을 조정하세요 */
-    }
-</style>
+<link rel="stylesheet" href="{% static 'img_list.css' %}">
 <form method="get" action="{% url 'img:search_images' %}">
     <input type="text" name="search" placeholder="Search by hashtag">
     <button type="submit">Search</button>
 </form>
-<body>
-    <h1>이미지 목록</h1>
-    <form method="get" action="{% url 'img:image_list' %}">
-        <label for="items_per_page">페이지당 이미지 수:</label>
-        <select name="items_per_page" id="items_per_page">
-            <option value="25" {% if items_per_page == 25 %}selected{% endif %}>25</option>
-            <option value="50" {% if items_per_page == 50 %}selected{% endif %}>50</option>
-            <option value="75" {% if items_per_page == 70 %}selected{% endif %}>75</option>
-            <option value="100" {% if items_per_page == 100 %}selected{% endif %}>100</option>
-        </select>
-        <input type="submit" value="적용">
-    </form>
-    <ul>
-        {% for image in image_items %}
-            <li>
+
+<h1>이미지 목록</h1>
+<form method="get" action="{% url 'img:image_list' %}">
+    <label for="items_per_page">페이지당 이미지 수:</label>
+    <select name="items_per_page" id="items_per_page">
+        <option value="25" {% if items_per_page == 25 %}selected{% endif %}>25</option>
+        <option value="50" {% if items_per_page == 50 %}selected{% endif %}>50</option>
+        <option value="75" {% if items_per_page == 70 %}selected{% endif %}>75</option>
+        <option value="100" {% if items_per_page == 100 %}selected{% endif %}>100</option>
+    </select>
+    <input type="submit" value="적용">
+</form>
+<ul class='navbox'>
+    {% for image in image_items %}
+        <li class ='img_box'>
+            <div > 
                 <img src="{{ image.image.url }}" alt="Image">
-                <div class="hashtags">
-                <p>해시태그: {% for hashtag in image.hashtags.all %}
-                    <span>{{ hashtag.name }} </span>
-                        {% endfor %}</p>
-                </div>
-            </li>
-        {% empty %}
-            <p>등록된 이미지가 없습니다.</p>
-        {% endfor %}
-    </ul>
-    <h1>실시간 검색 순위</h1>
-    <ul id="search-ranking">
-        {% for entry in search_history %}
-            <li>{{ entry.query }} ({{ entry.search_count }}회 검색)</li>
-        {% endfor %}
-    </ul>
-    <div class="pagination">
-        <span class="step-links">
-            {% if image_items.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ image_items.previous_page_number }}">previous</a>
-            {% endif %}
+            </div>
+            <div class="hashtags">
+            <p>해시태그: {% for hashtag in image.hashtags.all %}
+                <span>{{ hashtag.name }} </span>
+                    {% endfor %}</p>
+            </div>
+        </li>
+    {% empty %}
+        <p>등록된 이미지가 없습니다.</p>
+    {% endfor %}
+</ul>
+<div id="overlay">
+    <span id="download-button">다운로드</span>
+</div>
+{% comment %} <h1>실시간 검색 순위</h1>
+<ul id="search-ranking">
+    {% for entry in search_history %}
+        <li>{{ entry.query }} ({{ entry.search_count }}회 검색)</li>
+    {% endfor %}
+</ul>
+<div class="pagination">
+    <span class="step-links">
+        {% if image_items.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ image_items.previous_page_number }}">previous</a>
+        {% endif %}
 
-            <span class="current">
-                Page {{ image_items.number }} of {{ image_items.paginator.num_pages }}.
-            </span>
-
-            {% if image_items.has_next %}
-                <a href="?page={{ image_items.next_page_number }}">next</a>
-                <a href="?page={{ image_items.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
+        <span class="current">
+            Page {{ image_items.number }} of {{ image_items.paginator.num_pages }}.
         </span>
-    </div>
-</body>
 
+        {% if image_items.has_next %}
+            <a href="?page={{ image_items.next_page_number }}">next</a>
+            <a href="?page={{ image_items.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div> {% endcomment %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 이미지 클릭 시 확대되도록 하는 코드
+        var images = document.querySelectorAll('.img_box img');
+        var overlay = document.getElementById('overlay');
+        var overlayImg = document.createElement('img');
+        overlayImg.classList.add('overlay-img');
+        overlay.appendChild(overlayImg);
+
+        images.forEach(function (img) {
+            img.addEventListener('click', function () {
+                overlayImg.src = img.src;
+                overlay.style.display = 'flex';
+            });
+        });
+
+        // 다운로드 버튼 클릭 시 이미지 다운로드
+        var downloadButton = document.getElementById('download-button');
+        downloadButton.addEventListener('click', function () {
+            var link = document.createElement('a');
+            link.href = overlayImg.src;
+            link.download = 'image.jpg';
+            link.click();
+        });
+
+        // 오버레이 영역 클릭 시 확대 이미지 숨기기
+        overlay.addEventListener('click', function () {
+            overlay.style.display = 'none';
+        });
+    });
+</script>
 {% endblock content %}
