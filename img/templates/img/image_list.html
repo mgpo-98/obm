@@ -20,16 +20,22 @@
     </select>
     <input type="submit" value="적용">
 </form>
-<ul class='navbox'>
+<div class="btn-group" role="group" aria-label="Basic outlined example">
+    <button type="button" class="btn btn-outline-primary" onclick="filterImages('all')">전체</button>
+    <button type="button" class="btn btn-outline-primary" onclick="filterImages('gif')">GIF</button>
+    <button type="button" class="btn btn-outline-primary" onclick="filterImages('normal')">일반</button>
+</div>
+
+<ul class='navbox' id='imageList'>
     {% for image in image_items %}
-        <li class ='img_box'>
-            <div > 
+        <li class='img_box' data-category="{{ image.category }}">
+            <div>
                 <img src="{{ image.image.url }}" alt="Image">
             </div>
             <div class="hashtags">
-            <p>해시태그: {% for hashtag in image.hashtags.all %}
-                <span>{{ hashtag.name }} </span>
-                    {% endfor %}</p>
+                <p>해시태그: {% for hashtag in image.hashtags.all %}
+                    <span>{{ hashtag.name }} </span>
+                {% endfor %}</p>
             </div>
         </li>
     {% empty %}
@@ -39,6 +45,7 @@
 <div id="overlay">
     <span id="download-button">다운로드</span>
 </div>
+
 {% comment %} <h1>실시간 검색 순위</h1>
 <ul id="search-ranking">
     {% for entry in search_history %}
@@ -62,6 +69,22 @@
         {% endif %}
     </span>
 </div> {% endcomment %}
+
+<script>
+    function filterImages(category) {
+        var images = document.querySelectorAll('.img_box');
+        images.forEach(function (img) {
+            var imgCategory = img.getAttribute('data-category');
+            var imgSrc = img.querySelector('img').getAttribute('src');
+
+            if (category === 'all' || (category === 'gif' && imgSrc.endsWith('.gif')) || (category === 'normal' && !imgSrc.endsWith('.gif'))) {
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
+        });
+    }
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
