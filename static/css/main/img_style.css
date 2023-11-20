@@ -24,7 +24,9 @@
     display: inline-block;
     margin: 10px;
     text-align: center;
-    
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .logo{
@@ -44,6 +46,7 @@ h1, p {
 }
 .line{
     display: flex;
+    justify-content: center;
 }
 
 .hashtags {
