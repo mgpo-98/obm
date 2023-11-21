@@ -51,10 +51,17 @@
     cursor: pointer;
 }
 
-/* .btn-group {
-    display: flex;
-    gap: 10px; /* 간격 조절 */
-    
+.btn-group {
+  margin-right: 15px;
+  
+}
 .btn_list{
-    text-align: right;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.select{
+    margin-right: 10%;
 }

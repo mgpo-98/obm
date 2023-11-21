@@ -4,14 +4,18 @@
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'img_list.css' %}">
-<form method="get" action="{% url 'img:search_images' %}">
-    <input type="text" name="search" placeholder="Search by hashtag">
-    <button type="submit">Search</button>
-</form>
 
-<h1>이미지 목록</h1>
+
+
 <div class='btn_list'>
-    <form method="get" action="{% url 'img:image_list' %}">
+
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-outline-primary" onclick="filterImages('all')">전체</button>
+        <button type="button" class="btn btn-outline-primary" onclick="filterImages('gif')">GIF</button>
+        <button type="button" class="btn btn-outline-primary" onclick="filterImages('normal')">일반</button>
+    </div>
+    
+    <form method="get" action="{% url 'img:image_list' %}" class="select">
         <select name="items_per_page" id="items_per_page">
             <option value="25" {% if items_per_page == 25 %}selected{% endif %}>25</option>
             <option value="50" {% if items_per_page == 50 %}selected{% endif %}>50</option>
@@ -20,12 +24,6 @@
         </select>
         <input type="submit" value="적용">
     </form>
-
-    <div class="btn-group" role="group" aria-label="Basic outlined example">
-        <button type="button" class="btn btn-outline-primary" onclick="filterImages('all')">전체</button>
-        <button type="button" class="btn btn-outline-primary" onclick="filterImages('gif')">GIF</button>
-        <button type="button" class="btn btn-outline-primary" onclick="filterImages('normal')">일반</button>
-    </div>
 </div>
 <ul class='navbox' id='imageList'>
     {% for image in image_items %}
@@ -34,7 +32,7 @@
                 <img src="{{ image.image.url }}" alt="Image">
             </div>
             <div class="hashtags">
-                <p>해시태그: {% for hashtag in image.hashtags.all %}
+                <p>{% for hashtag in image.hashtags.all %}
                     <span>{{ hashtag.name }} </span>
                 {% endfor %}</p>
             </div>

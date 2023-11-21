@@ -12,8 +12,9 @@
 .profile{
     border-radius:50%; 
     width : 100px; 
-    height : auto; 
+    height : 100px; 
     object-fit: cover;
+    margin : 18px;
 }
 
 .rectangle {
@@ -43,6 +44,8 @@ p{
 }
 h1, p {
     display: inline-block;
+    margin: auto;
+    padding: 20px;
 }
 .line{
     display: flex;
