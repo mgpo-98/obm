@@ -1,0 +1,41 @@
+#image-upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#drop-area {
+    border: 2px dashed #ccc;
+    padding: 180px;
+    text-align: center;
+    cursor: pointer;
+    margin: 80px;
+    width: 60%;
+    height: 70%;
+}
+#drop-text {
+    font-size: 16px;
+    color: #333;
+}
+
+#drop-area:hover {
+    background-color: #f8f8f8;
+}
+
+#image-upload-form {
+    margin-top: 20px;
+}
+
+.file {
+    display: none;
+}
+body{
+    text-align: center;
+}
+hr {
+    width: 80%; /* 조절하고자 하는 길이로 설정 */
+    margin: auto; /* 화면 가운데 정렬을 위해 margin 설정 */
+}
+.image{
+    width: 40px;
+    height: 40px;
+}
