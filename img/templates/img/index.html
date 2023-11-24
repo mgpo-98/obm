@@ -18,15 +18,16 @@
     </div>
 
     <!-- 파일 입력 필드 -->
-    <input type="file" name="image" id="image-input" style="display: none;" >
+    <input type="file" name="image" id="image-input" style="display: none;" onchange="handleFileSelect(event)" >
     <div class="hashtag-btn">
-        <input type="text" name="hashtags" id="hashtags-input" placeholder="해시태그를 추가하세요 (띄어쓰기로 구분)">
+        <input type="text" name="hashtags" id="hashtags-input" placeholder="해시태그를 추가하세요">
         <button type="button" id="add-hashtag-button">해시태그 추가</button>
         <ul id="hashtag-list">
             <!-- 해시태그 목록이 여기에 추가될 것입니다. -->
         </ul>
     </div>
     <input type="submit" id="upload-button" value="이미지 업로드 및 해시태그 저장">
+    <span id="file-info"></span>
     
   
 </form> 
@@ -43,9 +44,20 @@
             const file = files[0];
             document.getElementById('image-input').files = files;
             document.getElementById('drop-text').textContent = `${file.name} 파일이 선택되었습니다.`;
+            document.getElementById('file-info').textContent = `선택된 파일: ${file.name}`;
         }
     }
-
+    function handleFileSelect(event) {
+        const files = event.target.files;
+    
+        // 파일이 하나 이상일 경우 첫 번째 파일을 선택
+        if (files.length > 0) {
+            const file = files[0];
+            document.getElementById('drop-text').textContent = `${file.name} 파일이 선택되었습니다.`;
+            document.getElementById('file-info').textContent = `선택된 파일: ${file.name}`;
+        }
+    }
+d
     function handleDragOver(event) {
         event.preventDefault();
     }
