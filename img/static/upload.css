@@ -39,3 +39,16 @@ hr {
     width: 40px;
     height: 40px;
 }
+
+#hashtag-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+
+#hashtag-list li {
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+} 
