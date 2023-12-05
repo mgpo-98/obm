@@ -1,11 +1,24 @@
-.accordion-body{
+/* .accordion-body{
     display: flex;
     flex-direction: column;
+} */
+
+#accordion {
+    width: 200px;
+    background-color: #f4f4f4;
+    overflow: hidden;
 }
-.accordion {
-    display: flex;
-    flex-direction: column;
-    max-width: 300px; /* 조절하고자 하는 최대 너비 설정 */
-    margin-left: auto; /* 오른쪽으로 정렬 */
-    margin-right: auto;
+
+.accordion-item {
+    border-bottom: 1px solid #ccc;
+}
+
+.accordion-header {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.accordion-content {
+    display: none;
+    padding: 10px;
 }
