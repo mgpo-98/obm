@@ -48,8 +48,56 @@
 
 {% comment %} 오킹의 밥줄 {% endcomment %}
 
+<li class="expandable-item">
+    <span class="toggle-btn">▶</span>오킹의 밥줄
+    
+  <ul class="sub-list">
+    <span class="toggle-btn">▶</span>오킹의 유튜브
+    <ul class="sub-list">
+        fd
+        aa
+    </ul>
+    <span class="toggle-btn">▶</span>오킹의 트위치
+    <ul class="sub-list">
+        vv
+        bb
+    </ul>
+    <span class="toggle-btn">▶</span>오킹의 sns
+    <ul class="sub-list">
+        hashtagqq
+        dds
+    </ul>
+    <!-- 내부 리스트 항목들은 여기에 추가 -->
+  </ul>
+</li>
+
+</ul>
+
+
+
 
 <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleButtons = document.querySelectorAll('.toggle-btn');
+      
+        toggleButtons.forEach(button => {
+          button.addEventListener('click', function () {
+            const listItem = this.parentElement;
+            const subList = listItem.querySelector('.sub-list');
+            
+            // 리스트 접고 펼치기
+            if (subList.style.display === 'none' || subList.style.display === '') {
+              subList.style.display = 'block';
+              this.innerText = '▼';  // 접기 아이콘으로 변경
+            } else {
+              subList.style.display = 'none';
+              this.innerText = '▶';  // 펼치기 아이콘으로 변경
+            }
+          });
+        });
+      });
+
     function filterImages(category) {
         var images = document.querySelectorAll('.img_box');
         images.forEach(function (img) {
