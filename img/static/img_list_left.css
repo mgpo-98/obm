@@ -1,24 +1,30 @@
-/* .accordion-body{
+.accordion-body{
     display: flex;
     flex-direction: column;
-} */
+}
 
-#accordion {
-    width: 200px;
-    background-color: #f4f4f4;
-    overflow: hidden;
+
+
+#accordionPanelsStayOpenExample {
+    width: 20%;
+}
+
+#accordionPanelsStayOpenExample .accordion-button {
+    background-color: transparent; /* 배경 없애기 */
+}
+
+#panelsStayOpen-headingOne {
+    background-color: transparent !important; /* 배경 없애기 */
+}
+
+.accordion-body {
+    padding: 0;
+}
+
+.accordion {
+    width: 100%;
 }
 
 .accordion-item {
-    border-bottom: 1px solid #ccc;
-}
-
-.accordion-header {
-    padding: 10px;
-    cursor: pointer;
-}
-
-.accordion-content {
-    display: none;
-    padding: 10px;
+    background-color: #f8f9fa; /* 추가적인 스타일링 */
 }

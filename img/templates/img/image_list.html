@@ -4,7 +4,7 @@
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'img_list.css' %}">
-
+<link rel="stylesheet" href="{% static 'img_list_left.css' %}">
 
 
 <div class='btn_list'>
@@ -24,79 +24,48 @@
         </select>
         <input type="submit" value="적용">
     </form>
-</div>
-<ul class='navbox' id='imageList'>
-    {% for image in image_items %}
-        <li class='img_box' data-category="{{ image.category }}">
-            <div>
-                <img src="{{ image.image.url }}" alt="Image">
+</div><div>
+    <ul class='navbox' id='imageList'>
+        {% for image in image_items %}
+            <li class='img_box' data-category="{{ image.category }}">
+                <div>
+                    <img src="{{ image.image.url }}" alt="Image">
+                </div>
+                <div class="hashtags">
+                    <p>{% for hashtag in image.hashtags.all %}
+                        <span>{{ hashtag.name }} </span>
+                    {% endfor %}</p>
+                </div>
+            </li> 
+        {% empty %}
+            <p>등록된 이미지가 없습니다.</p>
+        {% endfor %}
+    </ul>
+    <div id="overlay">
+        <span id="download-button">다운로드</span>
+    </div>
+
+    <div class="accordion" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                    오킹의 밥줄
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                <div class="accordion-body">
+                    <!-- 기존의 다른 아코디언 내용 -->
+                </div>
             </div>
-            <div class="hashtags">
-                <p>{% for hashtag in image.hashtags.all %}
-                    <span>{{ hashtag.name }} </span>
-                {% endfor %}</p>
-            </div>
-        </li> 
-    {% empty %}
-        <p>등록된 이미지가 없습니다.</p>
-    {% endfor %}
-</ul>
-<div id="overlay">
-    <span id="download-button">다운로드</span>
+        </div>
+    </div>
 </div>
-
-
-{% comment %} 오킹의 밥줄 {% endcomment %}
-
-<li class="expandable-item">
-    <span class="toggle-btn">▶</span>오킹의 밥줄
-    
-  <ul class="sub-list">
-    <span class="toggle-btn">▶</span>오킹의 유튜브
-    <ul class="sub-list">
-        fd
-        aa
-    </ul>
-    <span class="toggle-btn">▶</span>오킹의 트위치
-    <ul class="sub-list">
-        vv
-        bb
-    </ul>
-    <span class="toggle-btn">▶</span>오킹의 sns
-    <ul class="sub-list">
-        hashtagqq
-        dds
-    </ul>
-    <!-- 내부 리스트 항목들은 여기에 추가 -->
-  </ul>
-</li>
-
-</ul>
 
 
 
 
 <script>
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const toggleButtons = document.querySelectorAll('.toggle-btn');
-      
-        toggleButtons.forEach(button => {
-          button.addEventListener('click', function () {
-            const listItem = this.parentElement;
-            const subList = listItem.querySelector('.sub-list');
-            
-            // 리스트 접고 펼치기
-            if (subList.style.display === 'none' || subList.style.display === '') {
-              subList.style.display = 'block';
-              this.innerText = '▼';  // 접기 아이콘으로 변경
-            } else {
-              subList.style.display = 'none';
-              this.innerText = '▶';  // 펼치기 아이콘으로 변경
-            }
-          });
-        });
-      });
 
     function filterImages(category) {
         var images = document.querySelectorAll('.img_box');
