@@ -2,147 +2,44 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-
-
-<div class='box'>
-    <h1>오킹의 유튜브 <img src='media\design\로고\유튜브.avif' class='logo'></h1>
-    <div class='line'>
-        <div class="rectangle" > 
-            <a href='https://www.youtube.com/@oking1025'>
-                <img src='media\design\프사\유튜브 프사.jpg'class='profile'>오킹 유튜브
-            </a>
-        </div>
-        
-        <div class="rectangle" > 
-        <a href='https://www.youtube.com/@oking_replay'>
-            <img src='media\design\프사\다시보기 프사.jpg'class='profile'>오킹의 생방송 다시보기
-        </a></div>
-    </div>
-    <div class='line'>
-  
-   
-        <div class="rectangle" > 
-        <a href='https://www.youtube.com/@oking_game'>
-            <img src ='media\design\프사\오락킹.jpg' class='profile'>오락킹
-        </a></div>
-
-        <div class="rectangle" > 
-        <a href='https://www.youtube.com/@oking_shorts'>
-            <img src ='media\design\프사\숏킹.jpg' class='profile'>숏킹 유튜브
-        </a></div>
-  
-    </div>
-    <h1>오킹의 생방송 <img src='media\design\로고\트위치.png' class='logo'> </h1>
-    <div class='line'>
-        <div class="rectangle" >
-        <a href='https://www.twitch.tv/obm1025'>
-            <img src ='media\design\프사\트위치 프사.jpg' class='profile'>오킹 트위치 생방송
-        </a></div>
-
-        <div class="rectangle" >
-        <a href='https://twip.kr/obm1025'>
-            <img src ='media\design\프사\도네이션.PNG' class='profile'>오킹 도네이션
-        </a></div>
-    </div>
-    <div class='line'> 
-        <div class="rectangle" >
-        <a href='https://toon.at/donate/636948034831794621'>
-            <img src ='media\design\프사\투네이션.PNG' class='profile'>오킹 투네이션
-        </a></div>
-    </div>
-
-    <h1>오킹의 SNS  <img src='media\design\로고\인스타로고.png' class='logo'></h1>
-    <div class='line'>
-        <div class="rectangle" >
-        <a href='https://cafe.naver.com/okingrooftop'>
-            <img src ='media\design\프사\옼탑방.png' class='profile'>옼탑방 팬카페
-        </a></div>
-
-        <div class="rectangle" >
-        <a href='https://www.instagram.com/oking1025/'>
-            <img src ='media\design\프사\인스타 프사.jpg' class='profile'>오킹 인스타
-        </a></div>
-    </div>
-    <div class='line'p>
-        <div class="rectangle" >
-        <a href='https://www.facebook.com/oking1025'>
-            <img src='media\design\프사\유튜브 프사.jpg'class='profile'>오킹 페이스북
-        </a></div>
-        
-        <div class="rectangle" >
-            <a href='https://www.tiktok.com/@oking1025?lang=ko-KR'>
-                <img src='media\design\프사\틱톡 프사.jpg'class='profile'>오킹 틱톡
-            </a></div>
-    </div>
-</div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
-<script>
-    // 모달 띄우기 코드
-    const modal = document.getElementById("modal_add_feed");
-    const buttonAddFeed = document.getElementById("add_feed");
-    buttonAddFeed.addEventListener("click", e => {
-        modal.style.top = window.pageYOffset + 'px'; // top을 이용해 시작 y위치를 바꿔줌
-        modal.style.display = "flex";
-        document.body.style.overflowY = "hidden"; // 스크롤 없애기
-    });
+<h1>실시간 검색어 순위</h1>
+    <ul id="searchRanking"></ul>
 
-    // 모달 닫기 코드
-    const buttonCloseModal = document.getElementById("close_modal");
-    buttonCloseModal.addEventListener("click", e => {
-        modal.style.display = "none";
-        document.body.style.overflowY = "visible";
-    });
 
-<!-- jquery 부분 -->
-
-    $('.modal_image_upload')
-        .on("dragover", dragOver)
-        .on("dragleave", dragOver)
-        .on("drop", uploadFiles);
-
-    function dragOver(e){
-        e.stopPropagation();
-        e.preventDefault();
-        
-        if (e.type == "dragover") {
-            $(e.target).css({
-                "background-color": "black",
-                "outline-offset": "-20px"
-            });
-        } else {
-            $(e.target).css({
-                "background-color": "white",
-                "outline-offset": "-10px"
-            });
+    <script>
+        function updateSearchRank() {
+          // 서버에 요청하여 검색어 순위 갱신
+          $.ajax({
+            url: '/',
+            method: 'GET',
+            success: function (data) {
+              // 받아온 순위로 리스트 갱신
+              updateRankList(data.rank);
+            },
+            error: function () {
+              console.error('검색어 순위를 가져오는 중 오류가 발생했습니다.');
+            }
+          });
         }
-    }
-
-    function uploadFiles(e){
-        e.stopPropagation();
-        e.preventDefault();
-        
-        e.dataTransfer = e.originalEvent.dataTransfer; 
-        var files =  e.dataTransfer.files;
-
-        if (files.length > 1) {
-            alert('하나만 올려라.');
-            return;
+      
+        function updateRankList(rank) {
+          // 순위 리스트 업데이트
+          const searchRankList = $('#searchRankList');
+          searchRankList.empty();
+      
+          rank.forEach(function (keyword, index) {
+            searchRankList.append('<li>' + (index + 1) + '. ' + keyword + '</li>');
+          });
         }
+      
+        // 일정 간격으로 검색어 순위 업데이트
+        setInterval(updateSearchRank, 5000);  // 5초마다 업데이트
+      
+        // 페이지 로딩시 초기 검색어 순위 설정
+        updateSearchRank();
+      </script>
 
-        if (files[0].type.match(/image.*/)) {
-            $(e.target).css({
-                "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
-                "outline": "none",
-                "background-size": "100% 100%"});
-        }else{
-            alert('이미지가 아닙니다.');
-            return;
-        }
-
-    }
-
-</script>
 
 {% endblock content %}

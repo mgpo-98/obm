@@ -3,7 +3,7 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* 한 줄에 한 개씩 이미지를 나열하고 간격을 유지하는 설정 */
     gap: 20px; /* 이미지 간격 설정 */
     justify-content: space-evenly; /* 가로 간격을 일정하게 유지 */
-    padding: 0 15%; /* 좌우 여백 설정 */
+
 }
 
 .img_box {

@@ -40,13 +40,7 @@ def index(request):
 def image_list(request):
     image_items = Image.objects.all()
 
-    # 1일 동안 가장 많이 검색된 순서대로 탑 10 검색어
-    search_history = (
-        SearchHistory.objects
-        .values('query')
-        .annotate(search_count=Count('query'))
-        .order_by('-search_count')[:10]
-    )
+   
     # 페이지당 보여질 이미지 수
     items_per_page = int(request.GET.get('items_per_page', 25))  # 기본값은 25
     paginator = Paginator(image_items, items_per_page)
@@ -61,7 +55,7 @@ def image_list(request):
         # 페이지가 범위를 벗어나면 마지막 페이지를 가져옵니다.
         image_items = paginator.page(paginator.num_pages)
         
-    data = {'image_items': image_items, 'search_history': search_history}
+    data = {'image_items': image_items, }
     return render(request, 'img/image_list.html', data)
 
 def search_images(request):
