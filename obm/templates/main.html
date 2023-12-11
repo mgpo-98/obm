@@ -13,7 +13,8 @@
     }
   }
 </style>
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+
 <h2>실시간 검색어 순위</h2>
 <ul id="searchRankList"></ul>
 
@@ -33,28 +34,12 @@
 
   function updateRankList(rank) {
     const searchRankList = $('#searchRankList');
-    const currentRank = searchRankList.children().map(function () {
-      return $(this).text();
-    }).get();
-
-    // 순위 리스트 업데이트
     searchRankList.empty();
 
     rank.forEach(function (item, index) {
       let listItem = $('<li>' + (index + 1) + '. ' + item.query + ' (' + item.search_count + '회)</li>');
-
-      // 변동된 항목에 깜빡이는 효과 추가
-      if (currentRank.indexOf(item.query) === -1) {
-        listItem = listItem.addClass('changed');
-      }
-
       searchRankList.append(listItem);
     });
-
-    // 변동 효과 적용 후 1초 동안 효과 제거
-    setTimeout(function () {
-      searchRankList.children('.changed').removeClass('changed');
-    }, 1000);
   }
 
   // 일정 간격으로 검색어 순위 업데이트
@@ -63,5 +48,17 @@
 
 </script>
 
+
+<style>
+  .changed {
+    animation: blink 1s infinite alternate;
+  }
+
+  @keyframes blink {
+    to {
+      opacity: 0.3;
+    }
+  }
+</style>
 
 {% endblock content %}
