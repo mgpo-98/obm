@@ -18,10 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 from django.conf import settings
-
+from .views import get_popular_search_rank
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('img/', include('img.urls')),
     path('', views.main, name = 'main'),
-    
+    path('get_popular_search_rank/', get_popular_search_rank, name='get_popular_search_rank'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

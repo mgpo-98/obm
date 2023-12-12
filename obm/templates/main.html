@@ -2,49 +2,45 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<h2>인기 검색어 순위</h2>
-<ul id="popularSearchRank"></ul>
+<h2>인기 검색어 순위 (일간, 주간, 전체)</h2>
+<ul id="dailySearchRank"></ul>
+<ul id="weeklySearchRank"></ul>
+<ul id="overallSearchRank"></ul>
 
 <script>
-  function updatePopularSearchRank() {
+  function updateSearchRank(period, containerId) {
     $.ajax({
-      url: '/',
+      url: `/get_popular_search_rank/?period=${period}`,
       method: 'GET',
       success: function (data) {
-        updateRankList(data.rank);
+        console.log(`Received ${period} data:`, data);
+        updateRankList(data.rank, containerId);
       },
       error: function () {
-        console.error('인기 검색어 순위를 가져오는 중 오류가 발생했습니다.');
+        console.error(`검색어 순위(${period})를 가져오는 중 오류가 발생했습니다.`);
       }
     });
   }
 
-  function updateRankList(rank) {
-    const popularSearchRank = $('#popularSearchRank');
-    popularSearchRank.empty();
-
+  function updateRankList(rank, containerId) {
+    const searchRankContainer = $(`#${containerId}`);
+    searchRankContainer.empty();
     rank.forEach(function (item, index) {
-      let listItem = $('<li>' + (index + 1) + '. ' + item.query + ' (' + item.search_count + '회)</li>');
-      popularSearchRank.append(listItem);
+      const arrow = item.arrow;
+      const listItem = $(`<li>${arrow} ${index + 1}. ${item.query} (${item.search_count}회)${item.new}</li>`);
+      searchRankContainer.append(listItem);
     });
   }
 
-  // 일정 간격으로 인기 검색어 순위 업데이트
-  setInterval(updatePopularSearchRank, 5000);  // 5초마다 업데이트
-  updatePopularSearchRank();  // 페이지 로딩시 초기 검색어 순위 설정
-
+  // 일정 간격으로 검색어 순위 업데이트
+  setInterval(() => updateSearchRank('daily', 'dailySearchRank'), 5000);  // 5초마다 업데이트
+  setInterval(() => updateSearchRank('weekly', 'weeklySearchRank'), 10000);  // 10초마다 업데이트
+  setInterval(() => updateSearchRank('overall', 'overallSearchRank'), 15000);  // 15초마다 업데이트
+  updateSearchRank('daily', 'dailySearchRank');  // 페이지 로딩시 초기 검색어 순위 설정
+  updateSearchRank('weekly', 'weeklySearchRank');
+  updateSearchRank('overall', 'overallSearchRank');
 </script>
 
-<style>
-  .changed {
-    animation: blink 1s infinite alternate;
-  }
 
-  @keyframes blink {
-    to {
-      opacity: 0.3;
-    }
-  }
-</style>
 
 {% endblock content %}

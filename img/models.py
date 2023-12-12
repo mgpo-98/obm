@@ -13,6 +13,8 @@ class Hashtag(models.Model):
 class SearchHistory(models.Model):
     query = models.CharField(max_length=255)
     search_time = models.DateTimeField(auto_now_add=True)
-
+    daily_rank = models.IntegerField(default=0)
+    weekly_rank = models.IntegerField(default=0)
+    overall_rank = models.IntegerField(default=0)
     def __str__(self):
         return self.query
