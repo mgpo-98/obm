@@ -2,24 +2,11 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<style>
-  .changed {
-    animation: blink 1s infinite alternate;
-  }
-
-  @keyframes blink {
-    to {
-      opacity: 0.3;
-    }
-  }
-</style>
-
-
-<h2>실시간 검색어 순위</h2>
-<ul id="searchRankList"></ul>
+<h2>인기 검색어 순위</h2>
+<ul id="popularSearchRank"></ul>
 
 <script>
-  function updateSearchRank() {
+  function updatePopularSearchRank() {
     $.ajax({
       url: '/',
       method: 'GET',
@@ -27,27 +14,26 @@
         updateRankList(data.rank);
       },
       error: function () {
-        console.error('검색어 순위를 가져오는 중 오류가 발생했습니다.');
+        console.error('인기 검색어 순위를 가져오는 중 오류가 발생했습니다.');
       }
     });
   }
 
   function updateRankList(rank) {
-    const searchRankList = $('#searchRankList');
-    searchRankList.empty();
+    const popularSearchRank = $('#popularSearchRank');
+    popularSearchRank.empty();
 
     rank.forEach(function (item, index) {
       let listItem = $('<li>' + (index + 1) + '. ' + item.query + ' (' + item.search_count + '회)</li>');
-      searchRankList.append(listItem);
+      popularSearchRank.append(listItem);
     });
   }
 
-  // 일정 간격으로 검색어 순위 업데이트
-  setInterval(updateSearchRank, 5000);  // 5초마다 업데이트
-  updateSearchRank();  // 페이지 로딩시 초기 검색어 순위 설정
+  // 일정 간격으로 인기 검색어 순위 업데이트
+  setInterval(updatePopularSearchRank, 5000);  // 5초마다 업데이트
+  updatePopularSearchRank();  // 페이지 로딩시 초기 검색어 순위 설정
 
 </script>
-
 
 <style>
   .changed {
