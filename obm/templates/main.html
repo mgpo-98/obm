@@ -23,6 +23,7 @@
   }
 
   function updateRankList(rank, containerId) {
+    console.log('Updating rank list:', rank);
     const searchRankContainer = $(`#${containerId}`);
     searchRankContainer.empty();
     rank.forEach(function (item, index) {
