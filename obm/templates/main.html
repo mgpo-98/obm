@@ -22,12 +22,23 @@
     });
   }
 
+  function get_arrow(prev_rank, current_rank) {
+    if (typeof prev_rank === 'undefined') {
+      return '';  // 이전 순위가 없으면 변동 없음
+    }
+
+    const arrow = prev_rank < current_rank ? '↑' : (prev_rank > current_rank ? '↓' : '');
+    console.log(`get_arrow(${prev_rank}, ${current_rank}) -> ${arrow}`);
+    return arrow;
+  }
+
   function updateRankList(rank, containerId) {
     console.log('Updating rank list:', rank);
     const searchRankContainer = $(`#${containerId}`);
     searchRankContainer.empty();
     rank.forEach(function (item, index) {
-      const arrow = item.arrow;
+      const arrow = get_arrow(item.prev_rank, item.rank);
+      console.log(`Arrow for ${item.query}: ${arrow}`);
       const listItem = $(`<li>${arrow} ${index + 1}. ${item.query} (${item.search_count}회)${item.new}</li>`);
       searchRankContainer.append(listItem);
     });
