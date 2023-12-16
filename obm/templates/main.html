@@ -42,7 +42,7 @@
       const listItem = $(`<li>${arrow} ${index + 1}. ${item.query} (${item.search_count}회)${item.new}</li>`);
       searchRankContainer.append(listItem);
     });
-  }.
+  }
 
   // 일정 간격으로 검색어 순위 업데이트
   setInterval(() => updateSearchRank('daily', 'dailySearchRank'), 5000);  // 5초마다 업데이트
