@@ -43,4 +43,4 @@ def get_arrow(prev_rank, current_rank):
     elif prev_rank > current_rank:
         return '↓';  # 하락 화살표
     else:
-        return '';  # 변동 없음
+        return '-';  # 변동 없음

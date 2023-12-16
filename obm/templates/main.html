@@ -23,13 +23,19 @@
   }
 
   function get_arrow(prev_rank, current_rank) {
-    if (typeof prev_rank === 'undefined') {
-      return '';  // 이전 순위가 없으면 변동 없음
+    console.log('prev_rank',prev_rank);
+    console.log('current_rank',current_rank);
+    if (prev_rank === 0 && current_rank === 0) {
+      return '';  // 변동 없음
     }
-
-    const arrow = prev_rank < current_rank ? '↑' : (prev_rank > current_rank ? '↓' : '');
-    console.log(`get_arrow(${prev_rank}, ${current_rank}) -> ${arrow}`);
-    return arrow;
+  
+    if (prev_rank < current_rank) {
+      return '↑';  // 상승 화살표
+    } else if (prev_rank > current_rank) {
+      return '↓';  // 하락 화살표
+    } else {
+      return '';  // 변동 없음
+    }
   }
 
   function updateRankList(rank, containerId) {
@@ -46,8 +52,8 @@
 
   // 일정 간격으로 검색어 순위 업데이트
   setInterval(() => updateSearchRank('daily', 'dailySearchRank'), 5000);  // 5초마다 업데이트
-  setInterval(() => updateSearchRank('weekly', 'weeklySearchRank'), 10000);  // 10초마다 업데이트
-  setInterval(() => updateSearchRank('overall', 'overallSearchRank'), 15000);  // 15초마다 업데이트
+  setInterval(() => updateSearchRank('weekly', 'weeklySearchRank'), 1000000);  // 10초마다 업데이트
+  setInterval(() => updateSearchRank('overall', 'overallSearchRank'), 1500000);  // 15초마다 업데이트
   updateSearchRank('daily', 'dailySearchRank');  // 페이지 로딩시 초기 검색어 순위 설정
   updateSearchRank('weekly', 'weeklySearchRank');
   updateSearchRank('overall', 'overallSearchRank');
