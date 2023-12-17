@@ -36,8 +36,6 @@ def main(request):
 
 
 def get_arrow(prev_rank, current_rank):
-    print(prev_rank)
-    print(current_rank)
     if prev_rank < current_rank:
         return '↑';  # 상승 화살표
     elif prev_rank > current_rank:
