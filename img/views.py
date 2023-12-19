@@ -11,6 +11,8 @@ from django.db.models.query import QuerySet
 from django.core.serializers.json import DjangoJSONEncoder
 from django.forms.models import model_to_dict
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404
 # Create your views here.
 
 def index(request):
@@ -82,4 +84,13 @@ def search_images(request):
     images = Image.objects.filter(hashtags__name__icontains=query)  # 검색어를 포함하는 이미지를 필터링
     return render(request, 'img/search_results.html', {'images': images, 'query': query, 'search_history':search_history})
 
+@require_POST
+def download_image(request, image_id):
+    image = get_object_or_404(Image, id=image_id)
+    print(0)
+    print(image)
+    # 이미지 다운로드 횟수 증가
+    image.download_count += 1
+    image.save()
 
+    return JsonResponse({'message': '다운로드 성공', 'download_count': image.download_count})

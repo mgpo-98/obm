@@ -2,6 +2,7 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% block content %}
+<link rel="icon" type="image/x-icon" href="data:image/x-icon;,">
 
 <link rel="stylesheet" href="{% static 'img_list.css' %}">
 <link rel="stylesheet" href="{% static 'img_list_left.css' %}">
@@ -26,98 +27,9 @@
     </form>
 </div>
 <div>
-    <ul class='navbox' id='imageList'>
-        <div class="accordion" id="accordionPanelsStayOpenExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                        오킹의 밥줄
-                    </button>
-                </h2>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-                    <div class="accordion-body">
-                        <div class="accordion" id="accordionPanelsStayOpenExample">
-                            <div class="accordion-item">
-                              <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                                    오킹의 유튜브 <img src='../../media\design\로고\유튜브.avif' class='logo'>
-                                </button>
-                              </h2>
-                              <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-                                <div class="accordion-body">
-                                    <a href='https://www.youtube.com/@oking1025'>
-                                        <img src='../../media\design\프사\유튜브 프사.jpg'class='profile'>오킹 유튜브
-                                    </a>
-                
-                                    <a href='https://www.youtube.com/@oking_replay'>
-                                        <img src='../../media\design\프사\다시보기 프사.jpg'class='profile'>오킹의 생방송 다시보기
-                                    </a> 
-                
-                                    <a href='https://www.youtube.com/@oking_game'>
-                                        <img src ='../../media\design\프사\오락킹.jpg' class='profile'>오락킹
-                                    </a>
-                
-                                    <a href='https://www.youtube.com/@oking_shorts'>
-                                        <img src ='../../media\design\프사\숏킹.jpg' class='profile'>숏킹 유튜브
-                                    </a>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="accordion-item">
-                              <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-                                    오킹의 생방송 <img src='../../media\design\로고\트위치.png' class='logo'>
-                                </button>
-                              </h2>
-                              <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
-                                <div class="accordion-body">
-                                    <a href='https://www.twitch.tv/obm1025'>
-                                        <img src ='../../media\design\프사\트위치 프사.jpg' class='profile'>오킹 트위치 생방송
-                                    </a>
-                
-                                    <a href='https://twip.kr/obm1025'>
-                                        <img src ='../../media\design\프사\도네이션.PNG' class='profile'>오킹 도네이션
-                                    </a>
-                
-                                    <a href='https://toon.at/donate/636948034831794621'>
-                                        <img src ='../../media\design\프사\투네이션.PNG' class='profile'>오킹 투네이션
-                                    </a>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="accordion-item">
-                              <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-                                    오킹의 SNS  <img src='../../media\design\로고\인스타로고.png' class='logo'>
-                                </button>
-                              </h2>
-                              <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
-                                <div class="accordion-body">
-                                    <a href='https://cafe.naver.com/okingrooftop'>
-                                        <img src ='../../media\design\프사\옼탑방.png' class='profile'>옼탑방 팬카페
-                                    </a>
-                
-                                    <a href='https://www.instagram.com/oking1025/'>
-                                        <img src ='../../media\design\프사\인스타 프사.jpg' class='profile'>오킹 인스타
-                                    </a>
-                
-                                    <a href='https://www.facebook.com/oking1025'>
-                                        <img src='../../media\design\프사\유튜브 프사.jpg'class='profile'>오킹 페이스북
-                                    </a>
-                
-                                    <a href='https://www.tiktok.com/@oking1025?lang=ko-KR'>
-                                        <img src='../../media\design\프사\틱톡 프사.jpg'class='profile'>오킹 틱톡
-                                    </a>
-                                 </div>
-                              </div>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+   
         {% for image in image_items %}
-            <li class='img_box' data-category="{{ image.category }}">
+            <li class='img_box' data-category="{{ image.category }}" data-image-id="{{ image.id }}">
                 <div>
                     <img src="{{ image.image.url }}" alt="Image">
                 </div>
@@ -126,6 +38,7 @@
                         <span>{{ hashtag.name }} </span>
                     {% endfor %}</p>
                 </div>
+                
             </li> 
         {% empty %}
             <p>등록된 이미지가 없습니다.</p>
@@ -162,28 +75,53 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // 이미지 클릭 시 확대되도록 하는 코드
-        var images = document.querySelectorAll('.img_box img');
         var overlay = document.getElementById('overlay');
         var overlayImg = document.createElement('img');
         overlayImg.classList.add('overlay-img');
         overlay.appendChild(overlayImg);
 
+        // 이미지 클릭 시 확대되도록 하는 코드
+        var images = document.querySelectorAll('.img_box img');
         images.forEach(function (img) {
-            img.addEventListener('click', function () {
-                overlayImg.src = img.src;
+            console.log('Image clicked:', img);
+            img.addEventListener('click', function (event) {
+                var clickedImg = event.target;  // 클릭된 이미지 엘리먼트
+                overlayImg.src = clickedImg.src;
                 overlay.style.display = 'flex';
+                var imageId = clickedImg.closest('.img_box').getAttribute('data-image-id');
+                console.log('Clicked image ID:', imageId);
+        
+                var downloadButton = document.getElementById('download-button');
+                downloadButton.setAttribute('data-image-id', imageId);
             });
         });
+        
 
         // 다운로드 버튼 클릭 시 이미지 다운로드
         var downloadButton = document.getElementById('download-button');
         downloadButton.addEventListener('click', function () {
-            var link = document.createElement('a');
-            link.href = overlayImg.src;
-            link.download = 'image.jpg';
-            link.click();
+            var imageId = downloadButton.getAttribute('data-image-id');
+            // 이미지 다운로드 요청을 서버로 보냅니다.
+            $.ajax({
+                type: 'POST',
+                url: `/download/${imageId}/`,  // 실제 변수를 사용하세요
+                headers: {'X-CSRFToken': csrftoken},  // CSRF 토큰 추가
+                success: function (data) {
+                    // 성공 시 처리
+                    console.log('다운로드 성공');
+                    var link = document.createElement('a');
+                    link.href = overlayImg.src;
+                    link.download = 'image.jpg';
+                    link.click();
+                },
+                error: function () {
+                    // 실패 시 처리
+                    console.error('다운로드 실패');
+                }
+            });
+            
         });
+        
 
         // 오버레이 영역 클릭 시 확대 이미지 숨기기
         overlay.addEventListener('click', function () {
