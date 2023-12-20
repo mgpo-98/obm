@@ -1,13 +1,16 @@
 .navbox {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* 한 줄에 한 개씩 이미지를 나열하고 간격을 유지하는 설정 */
-    gap: 20px; /* 이미지 간격 설정 */
+    gap: 40px; /* 이미지 간격 설정 */
     justify-content: space-evenly; /* 가로 간격을 일정하게 유지 */
-
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 3%;
 }
 
 .img_box {
     box-sizing: border-box;
+    text-align: left; /* 중앙 정렬 방지 */
 }
 
 .img_box img {
@@ -55,13 +58,19 @@
   margin-right: 15px;
   
 }
-.btn_list{
+.btn_list {
     display: flex;
     align-items: flex-start;
     justify-content: flex-end;
     margin-top: 25px;
     margin-bottom: 25px;
+    text-align: left; /* 부모에게 적용된 text-align: center; 또는 justify-content: center;를 덮어쓰기 위해 left로 지정 */
 }
+
 .select{
     margin-right: 10%;
+}
+
+body {
+    height: 100%;
 }

@@ -65,9 +65,10 @@ def get_popular_search_rank(request):
 
 def main(request):
     popular_images = Image.objects.order_by('-download_count')[:6]
-    
+    print(1)
+    print(popular_images)
     context = {'popular_images': popular_images}
-    return render(request, 'main.html')
+    return render(request, 'main.html', context)
 
 
 def get_arrow(prev_rank, current_rank):

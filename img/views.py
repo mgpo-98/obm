@@ -26,11 +26,11 @@ def index(request):
                 hashtag, created = Hashtag.objects.get_or_create(name=tag)
                 image.hashtags.add(hashtag)
                 data = {'message': '업로드가 성공적으로 완료되었습니다.'}  # JSON 응답 데이터
-               
 
-            
             return JsonResponse({'success': 'Image uploaded successfully!'})
-
+        else:
+            error_message = form.errors.get('__all__', '')
+            return JsonResponse({'error': error_message}, status=400)
     else:
         form = ImageUploadForm()
     context = {
@@ -42,7 +42,7 @@ def index(request):
 def image_list(request):
     image_items = Image.objects.all()
 
-   
+    
     # 페이지당 보여질 이미지 수
     items_per_page = int(request.GET.get('items_per_page', 25))  # 기본값은 25
     paginator = Paginator(image_items, items_per_page)
@@ -87,8 +87,7 @@ def search_images(request):
 @require_POST
 def download_image(request, image_id):
     image = get_object_or_404(Image, id=image_id)
-    print(0)
-    print(image)
+  
     # 이미지 다운로드 횟수 증가
     image.download_count += 1
     image.save()

@@ -2,10 +2,10 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% block content %}
-<link rel="icon" type="image/x-icon" href="data:image/x-icon;,">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
 
 <link rel="stylesheet" href="{% static 'img_list.css' %}">
-<link rel="stylesheet" href="{% static 'img_list_left.css' %}">
+
 
 
 <div class='btn_list'>
@@ -27,27 +27,27 @@
     </form>
 </div>
 <div>
-   
-        {% for image in image_items %}
-            <li class='img_box' data-category="{{ image.category }}" data-image-id="{{ image.id }}">
-                <div>
-                    <img src="{{ image.image.url }}" alt="Image">
-                </div>
-                <div class="hashtags">
-                    <p>{% for hashtag in image.hashtags.all %}
-                        <span>{{ hashtag.name }} </span>
-                    {% endfor %}</p>
-                </div>
-                
-            </li> 
-        {% empty %}
-            <p>등록된 이미지가 없습니다.</p>
-        {% endfor %}
-        
-    </ul>
-    <div id="overlay">
-        <span id="download-button">다운로드</span>
-    </div>
+    <ul class='navbox' id='imageList'>   
+    {% for image in image_items %}
+        <li class='img_box' data-category="{{ image.category }}" data-image-id="{{ image.id }}">
+            <div>
+                <img src="{{ image.image.url }}" alt="Image">
+            </div>
+            <div class="hashtags">
+                <p>{% for hashtag in image.hashtags.all %}
+                    <span>{{ hashtag.name }} </span>
+                {% endfor %}</p>
+            </div>
+            
+        </li> 
+    {% empty %}
+        <p>등록된 이미지가 없습니다.</p>
+    {% endfor %}
+    
+
+<div id="overlay">
+    <span id="download-button">다운로드</span>
+</div>
 
   
 </div>
@@ -74,7 +74,23 @@
 </script>
 
 <script>
+        // CSRF 토큰을 가져오는 함수
+        function getCSRFToken() {
+            var csrfToken = null;
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.startsWith('csrftoken=')) {
+                    csrfToken = cookie.substring('csrftoken='.length, cookie.length);
+                    break;
+                }
+            }
+            return csrfToken;
+        }
     document.addEventListener('DOMContentLoaded', function () {
+         // CSRF 토큰을 가져옴
+         var csrftoken = getCSRFToken();
+
         var overlay = document.getElementById('overlay');
         var overlayImg = document.createElement('img');
         overlayImg.classList.add('overlay-img');
@@ -104,7 +120,7 @@
             // 이미지 다운로드 요청을 서버로 보냅니다.
             $.ajax({
                 type: 'POST',
-                url: `/download/${imageId}/`,  // 실제 변수를 사용하세요
+                url: `/img/download/${imageId}/`,  // 실제 변수를 사용하세요
                 headers: {'X-CSRFToken': csrftoken},  // CSRF 토큰 추가
                 success: function (data) {
                     // 성공 시 처리

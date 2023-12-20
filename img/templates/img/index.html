@@ -27,9 +27,7 @@
         </ul>
     </div>
     <input type="submit" id="upload-button" value="이미지 업로드 및 해시태그 저장">
-    <span id="file-info"></span>
     
-  
 </form> 
 
 
@@ -38,7 +36,7 @@
     function handleDrop(event) {
         event.preventDefault();
         const files = event.dataTransfer.files;
-
+        console.log(files.length );
         // 파일이 하나 이상일 경우 첫 번째 파일을 선택
         if (files.length > 0) {
             const file = files[0];
@@ -46,15 +44,25 @@
             document.getElementById('drop-text').textContent = `${file.name} 파일이 선택되었습니다.`;
             document.getElementById('file-info').textContent = `선택된 파일: ${file.name}`;
         }
+        else {
+            // 파일이 선택되지 않았을 때의 처리
+            document.getElementById('drop-text').textContent = '이미지를 드래그하여 업로드하세요.';
+            document.getElementById('file-info').textContent = '';
+        }
     }
     function handleFileSelect(event) {
         const files = event.target.files;
-    
+        console.log(files.length );
         // 파일이 하나 이상일 경우 첫 번째 파일을 선택
         if (files.length > 0) {
             const file = files[0];
             document.getElementById('drop-text').textContent = `${file.name} 파일이 선택되었습니다.`;
             document.getElementById('file-info').textContent = `선택된 파일: ${file.name}`;
+        }
+        else {
+            // 파일이 선택되지 않았을 때의 처리
+            document.getElementById('drop-text').textContent = '이미지를 드래그하여 업로드하세요.';
+            document.getElementById('file-info').textContent = '';
         }
     }
 
@@ -100,7 +108,13 @@
         const uploadForm = document.getElementById('image-upload-form');
         uploadForm.addEventListener('submit', function(event) {
             event.preventDefault();
-            
+            // 이미지 파일 확인
+            const imageInput = document.getElementById('image-input');
+            if (imageInput.files.length === 0) {
+                // 이미지가 선택되지 않았을 때의 처리
+                alert('이미지를 선택하세요.');
+                return;
+            }            
             // X 표시 버튼이 있는 상태에서 서버로 전송하지 않도록 처리
             const hashtags = Array.from(hashtagList.getElementsByTagName('li'))
                 .map(hashtagElement => {

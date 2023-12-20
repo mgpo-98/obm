@@ -1,0 +1,13 @@
+.card {
+    margin-bottom: 20px;
+  }
+  
+  /* 인기 검색어 순위 스타일 */
+  #searchRank {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  #searchRank li {
+    margin-bottom: 10px;
+  }
