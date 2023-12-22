@@ -24,5 +24,5 @@ urlpatterns = [
     path('img/', include('img.urls')),
     path('', views.main, name = 'main'),
     path('get_popular_search_rank/', get_popular_search_rank, name='get_popular_search_rank'),
-    path('update_download_count/', views.update_download_count, name='update_download_count'),
+    path('download/<int:image_id>/', views.download_image, name='download_image'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

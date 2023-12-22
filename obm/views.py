@@ -8,7 +8,8 @@ from datetime import datetime, timedelta
 from django.db.models import Min
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
-
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
 def get_start_of_week(date):
     # 주어진 날짜의 요일 (0: 월요일, 1: 화요일, ..., 6: 일요일)
@@ -82,18 +83,14 @@ def get_arrow(prev_rank, current_rank):
     else:
         return '-';  # 변동 없음
 
-@csrf_exempt
-def update_download_count(request):
-    if request.method == 'POST':
-        data = request.POST
-        image_url = data.get('image_url', '')
-        image = get_object_or_404(Image, image__url=image_url)
-        
-        # 이미지의 download_count를 1씩 증가
-        image.download_count += 1
-        image.save()
 
-        return JsonResponse({'success': True, 'download_count': image.download_count})
+@csrf_exempt    
+@require_POST
+def download_image(request, image_id):
+    image = get_object_or_404(Image, id=image_id)
+  
+    # 이미지 다운로드 횟수 증가
+    image.download_count += 1
+    image.save()
 
-    return JsonResponse({'success': False, 'error': 'Invalid request method'})   
-    
+    return JsonResponse({'message': '다운로드 성공', 'download_count': image.download_count})
