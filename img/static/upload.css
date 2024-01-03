@@ -52,3 +52,37 @@ hr {
     border: 1px solid #ccc;
     border-radius: 5px;
 } 
+
+
+/* Add your global styles here */
+
+.hashtag-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.hashtag {
+    margin: 5px;
+    padding: 8px;
+    color: white;
+    border-radius: 20px;
+    background-color: #ae52d4; /* 연보라색 배경색 */
+    display: flex;
+    align-items: center;
+}
+
+.hashtag-text {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.remove-button {
+    background-color: white;
+    color: #ae52d4; /* 연보라색 */
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
