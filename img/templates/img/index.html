@@ -72,7 +72,6 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         const addHashtagButton = document.getElementById('add-hashtag-button');
-        const hashtagsInput = document.getElementById('hashtags-input');
         const hashtagList = document.getElementById("hashtag-list");
 
         // 파일 입력 필드 클릭 시 드래그 앤 드롭 영역이 선택되도록 설정
@@ -86,6 +85,7 @@
         });
 
         addHashtagButton.addEventListener('click', function() {
+            const hashtagsInput = document.getElementById('hashtags-input');
             const hashtag = hashtagsInput.value.trim();
             if (hashtag) {
                 const hashtagElement = document.createElement("li");
@@ -106,6 +106,14 @@
         });
     
         const uploadForm = document.getElementById('image-upload-form');
+        const hashtagsInput = document.getElementById('hashtags-input');
+        hashtagsInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                // Enter 키 눌렸을 때 해시태그 추가 버튼 클릭
+                document.getElementById('add-hashtag-button').click();
+                event.preventDefault(); // 폼의 기본 동작 방지
+            }
+        });
         uploadForm.addEventListener('submit', function(event) {
             event.preventDefault();
             // 이미지 파일 확인
@@ -126,11 +134,11 @@
                 })
                 .join(', ');
 
-            const hashtagsInput = document.createElement('input');
-            hashtagsInput.type = 'hidden';
-            hashtagsInput.name = 'hashtags';
-            hashtagsInput.value = JSON.stringify(hashtags);
-            uploadForm.appendChild(hashtagsInput);
+            const hashtagsInputHidden = document.createElement('input');
+            hashtagsInputHidden.type = 'hidden';
+            hashtagsInputHidden.name = 'hashtags';
+            hashtagsInputHidden.value = JSON.stringify(hashtags);
+            uploadForm.appendChild(hashtagsInputHidden);
         
             // 이미지 업로드 및 해시태그 등록 요청을 보냅니다.
             fetch('/img/', {

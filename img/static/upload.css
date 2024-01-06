@@ -51,8 +51,8 @@ hr {
     padding: 5px 10px;
     border: 1px solid #ccc;
     border-radius: 15px; /* 테두리 둥글게 설정 */
-    background-color: #ae52d4; /* 보라색 배경색 */
-    color: white; /* 텍스트 색상 */
+    background-color: rgb(224,234,241);
+    color: rgb(112,152,178);
 } 
 
 
@@ -70,7 +70,7 @@ hr {
     padding: 8px;
     color: white;
     border-radius: 20px;
-    background-color: #ae52d4; /* 연보라색 배경색 */
+    background-color: rgb(224,234,241);
     display: flex;
     align-items: center;
 }
@@ -78,12 +78,12 @@ hr {
 .hashtag-text {
     flex-grow: 1;
     margin-right: 10px;
-    color: white; /* 해시태그 텍스트 색상 */
+    color: rgb(112,152,178);
 }
 
 .remove-button {
     
-    color: white; /* 연보라색 */
+    color: rgb(112,152,178);
     background-color: transparent; /* 배경 없음 */
     border: none;
     border-radius: 50%;
