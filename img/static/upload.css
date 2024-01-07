@@ -43,7 +43,14 @@ hr {
 #hashtag-list {
     display: flex;
     list-style: none;
-    padding: 0;
+    flex-wrap: wrap;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-left: -100px; /* 왼쪽으로 이동 */
+    width: 900px; /* 원하는 너비로 조절 */
+    min-height: 50px; /* 최소 높이 설정 */
 }
 
 #hashtag-list li {
