@@ -20,16 +20,13 @@
     <!-- 파일 입력 필드 -->
     <input type="file" name="image" id="image-input" style="display: none;" onchange="handleFileSelect(event)" >
     <div class="hashtag-btn">
+        <div id="hashtags-display" class="hashtags-display"></div>
         <input type="text" name="hashtags" id="hashtags-input" placeholder="해시태그를 추가하세요">
         <button type="button" id="add-hashtag-button">해시태그 추가</button>
-        <ul id="hashtag-list">
-            
-        </ul>
     </div>
+    <!-- 수정된 부분: 해시태그를 표시하는 ul 제거 -->
     <input type="submit" id="upload-button" value="이미지 업로드 및 해시태그 저장">
-    
 </form> 
-
 
 <script>
     // 드래그 앤 드롭 이벤트 핸들러
@@ -71,8 +68,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        const addHashtagButton = document.getElementById('add-hashtag-button');
+        const hashtagsInput = document.getElementById('hashtags-input');
         const hashtagList = document.getElementById("hashtag-list");
+        const hashtagsDisplay = document.getElementById('hashtags-display');
 
         // 파일 입력 필드 클릭 시 드래그 앤 드롭 영역이 선택되도록 설정
         document.getElementById('image-input').addEventListener('click', function() {
@@ -84,36 +82,43 @@
             document.getElementById('image-input').click();
         });
 
-        addHashtagButton.addEventListener('click', function() {
-            const hashtagsInput = document.getElementById('hashtags-input');
-            const hashtag = hashtagsInput.value.trim();
-            if (hashtag) {
-                const hashtagElement = document.createElement("li");
-                hashtagElement.textContent = hashtag;
+        // 수정된 부분: 해시태그를 입력창에 추가하는 함수
+        function addHashtagToInput(hashtag) {
+            const hashtagElement = document.createElement("span");
+            hashtagElement.textContent = hashtag;
 
-                // X표시 버튼 추가
-                const removeButton = document.createElement("button");
-                removeButton.textContent = "X";
-                removeButton.className = "remove-button";
-                removeButton.addEventListener("click", function() {
-                    // X표시 버튼 클릭 시 해당 리스트 삭제
-                    hashtagElement.remove();
-                });
-                hashtagElement.appendChild(removeButton);
-                hashtagList.appendChild(hashtagElement);
-                hashtagsInput.value = ''; // 입력 필드 지우기
+            // X표시 버튼 추가
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "X";
+            removeButton.className = "remove-button";
+            removeButton.addEventListener("click", function() {
+                // X표시 버튼 클릭 시 해당 리스트 삭제
+                hashtagElement.remove();
+            });
+            hashtagElement.appendChild(removeButton);
+            
+            // 해시태그를 입력창에 추가
+            hashtagsDisplay.appendChild(hashtagElement);
+            hashtagsInput.value = ''; // 입력 필드 지우기
+        }
+
+        hashtagsInput.addEventListener('keydown', function(event) {
+            const hashtagsInput = document.getElementById('hashtags-input');
+            
+            if (event.key === 'Enter' && hashtagsInput.value.trim() !== "") {
+                event.preventDefault();
+                const hashtag = hashtagsInput.value.trim();
+                addHashtagToInput(hashtag);
+            } else if (event.key === ' ' && hashtagsInput.value.trim() !== "") {
+                // 수정된 부분: 스페이스바 입력 시도 해시태그 추가
+                event.preventDefault();
+                const hashtag = hashtagsInput.value.trim();
+                addHashtagToInput(hashtag);
             }
         });
     
         const uploadForm = document.getElementById('image-upload-form');
-        const hashtagsInput = document.getElementById('hashtags-input');
-        hashtagsInput.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                // Enter 키 눌렸을 때 해시태그 추가 버튼 클릭
-                document.getElementById('add-hashtag-button').click();
-                event.preventDefault(); // 폼의 기본 동작 방지
-            }
-        });
+        
         uploadForm.addEventListener('submit', function(event) {
             event.preventDefault();
             // 이미지 파일 확인
