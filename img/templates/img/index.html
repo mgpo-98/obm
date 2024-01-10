@@ -71,8 +71,13 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         const hashtagsInput = document.getElementById('hashtags-input');
-        const hashtagList = document.getElementById("hashtag-list");
-        const hashtagsDisplay = document.getElementById('hashtags-display');
+        // 수정된 부분: Tagify 초기화
+        const tagify = new Tagify(hashtagsInput, {
+            maxTags: 5,  // 최대 5개 태그까지 허용
+            dropdown: {
+                enabled: 0  // 자동 완성 드롭다운 비활성화
+            }
+        });
 
         // 파일 입력 필드 클릭 시 드래그 앤 드롭 영역이 선택되도록 설정
         document.getElementById('image-input').addEventListener('click', function() {
