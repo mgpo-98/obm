@@ -3,9 +3,6 @@
 {% load static %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'upload.css' %}">
-<link rel="stylesheet" href="path/to/tagify.css">
-<script src="path/to/tagify.min.js"></script>
-
 
 <h1>이미지 업로드</h1>
 <hr>
@@ -23,10 +20,9 @@
     <input type="file" name="image" id="image-input" style="display: none;" onchange="handleFileSelect(event)" >
     <div class="hashtag-btn">
         <div id="hashtags-display" class="hashtags-display"></div>
-        <input type="text" name="hashtags" id="hashtags-input" placeholder="해시태그를 추가하세요">
-       
+        <!-- 수정된 부분: 해시태그 입력창에 자동으로 # 추가 -->
+        <input type="text" name="hashtags" id="hashtags-input" placeholder="#해시태그를 추가하세요">
     </div>
-    <!-- 수정된 부분: 해시태그를 표시하는 ul 제거 -->
     <input type="submit" id="upload-button" value="이미지 업로드">
 </form> 
 
@@ -71,13 +67,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         const hashtagsInput = document.getElementById('hashtags-input');
-        // 수정된 부분: Tagify 초기화
-        const tagify = new Tagify(hashtagsInput, {
-            maxTags: 5,  // 최대 5개 태그까지 허용
-            dropdown: {
-                enabled: 0  // 자동 완성 드롭다운 비활성화
-            }
-        });
+        const hashtagsDisplay = document.getElementById('hashtags-display');
 
         // 파일 입력 필드 클릭 시 드래그 앤 드롭 영역이 선택되도록 설정
         document.getElementById('image-input').addEventListener('click', function() {
@@ -91,12 +81,11 @@
 
         // 수정된 부분: 해시태그를 입력창에 추가하는 함수
         function addHashtagToInput(hashtag) {
-            const hashtagElement = document.createElement("span");
-            hashtagElement.textContent = hashtag;
             const currentHashtagsCount = hashtagsDisplay.getElementsByTagName('span').length;
             if (currentHashtagsCount < 5) {
                 const hashtagElement = document.createElement("span");
                 hashtagElement.textContent = hashtag;
+
                 // X표시 버튼 추가
                 const removeButton = document.createElement("button");
                 removeButton.textContent = "X";
@@ -112,6 +101,18 @@
                 hashtagsInput.value = ''; // 입력 필드 지우기
             }
         }
+
+        hashtagsInput.addEventListener('input', function(event) {
+            let value = event.target.value;
+            if (value.length === 1 && value[0] !== '#') {
+                // 입력값이 #으로 시작하지 않으면 자동으로 # 추가
+                value = `#${value}`;
+            }
+
+            // 최대 5개까지만 허용
+            const hashtags = value.split(' ').slice(0, 5);
+            event.target.value = hashtags.join(' ');
+        });
 
         hashtagsInput.addEventListener('keydown', function(event) {
             const hashtagsInput = document.getElementById('hashtags-input');
@@ -140,7 +141,7 @@
                 return;
             }            
             // X 표시 버튼이 있는 상태에서 서버로 전송하지 않도록 처리
-            const hashtags = Array.from(hashtagList.getElementsByTagName('li'))
+            const hashtags = Array.from(hashtagsDisplay.getElementsByTagName('span'))
                 .map(hashtagElement => {
                     // X 표시 버튼 제거
                     const cloneElement = hashtagElement.cloneNode(true);
