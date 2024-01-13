@@ -43,14 +43,36 @@
     {% empty %}
         <p>등록된 이미지가 없습니다.</p>
     {% endfor %}
+    {% comment %} 페이지 네이션  {% endcomment %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if image_items.has_previous %}
+                <a href="?page=1&items_per_page={{ items_per_page }}">&laquo; 처음</a>
+                <a href="?page={{ image_items.previous_page_number }}&items_per_page={{ items_per_page }}">이전</a>
+            {% endif %}
+            
+            <span class="current">
+                페이지 {{ image_items.number }} / {{ image_items.paginator.num_pages }}.
+            </span>
+            
+            {% if image_items.has_next %}
+                <a href="?page={{ image_items.next_page_number }}&items_per_page={{ items_per_page }}">다음</a>
+                <a href="?page={{ image_items.paginator.num_pages }}&items_per_page={{ items_per_page }}">끝 &raquo;</a>
+            {% endif %}
+            
+            {% for i in image_items.paginator.page_range %}
+                <a href="?page={{ i }}&items_per_page={{ items_per_page }}">{{ i }}</a>
+            {% endfor %}
+        </span>
+    </div>
     
-
+</div>
 <div id="overlay">
     <span id="download-button">다운로드</span>
 </div>
 
   
-</div>
+
 
 
 
