@@ -57,7 +57,7 @@ def image_list(request):
         # 페이지가 범위를 벗어나면 마지막 페이지를 가져옵니다.
         image_items = paginator.page(paginator.num_pages)
         
-    data = {'image_items': image_items, }
+    data = {'image_items': image_items, 'items_per_page': items_per_page}
     return render(request, 'img/image_list.html', data)
 
 def search_images(request):
