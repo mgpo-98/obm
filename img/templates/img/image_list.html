@@ -48,17 +48,21 @@
     <div class="pagination">
         <span class="step-links">
             {% if image_items.has_previous %}
-                <a href="?page=1&items_per_page={{ items_per_page }}">first</a>
-                <a href="?page={{ image_items.previous_page_number }}&items_per_page={{ items_per_page }}">previous</a>
+                <a href="?page=1&items_per_page={{ items_per_page }}" class="pagination-arrow">처음</a>
+                <a href="?page={{ image_items.previous_page_number }}&items_per_page={{ items_per_page }}" class="pagination-arrow">«</a>
             {% endif %}
     
-            <span class="current">
-                페이지 {{ image_items.number }} of {{ image_items.paginator.num_pages }}.
-            </span>
+            {% for i in image_items.paginator.page_range %}
+                {% if image_items.number == i %}
+                    <span class="current">{{ i }}</span>
+                {% else %}
+                    <a href="?page={{ i }}&items_per_page={{ items_per_page }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
     
             {% if image_items.has_next %}
-                <a href="?page={{ image_items.next_page_number }}&items_per_page={{ items_per_page }}">next</a>
-                <a href="?page={{ image_items.paginator.num_pages }}&items_per_page={{ items_per_page }}">last</a>
+                <a href="?page={{ image_items.next_page_number }}&items_per_page={{ items_per_page }}" class="pagination-arrow">»</a>
+                <a href="?page={{ image_items.paginator.num_pages }}&items_per_page={{ items_per_page }}" class="pagination-arrow">끝</a>
             {% endif %}
         </span>
     </div>
