@@ -84,6 +84,8 @@ body {
     align-items: center;
     margin: 20px 0;
     text-align: center;
+    padding: 10px; /* 상하좌우 여백 조절 */
+    width: 100%; /* 전체적인 너비 조절 */
 }
 
 .pagination a {
@@ -98,6 +100,7 @@ body {
     border: 1px solid #ddd;
     transition: background-color 0.3s;
     display: inline-block;
+  
 }
 
 .pagination .current {
@@ -118,3 +121,50 @@ body {
     background-color: #ddd;
 }
 
+.step-links a {
+    color: black;
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 0 4px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+  }
+  
+  .step-links a:hover {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .step-links .current {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border: 1px solid #4CAF50;
+    position: relative;
+    z-index: 1; /* 선택된 페이지 번호를 다른 요소 위에 위치하도록 설정 */
+  }
+  
+  .step-links span {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 0 4px;
+    border: 1px solid #ddd;
+    color: black;
+  }
+  
+  .step-links a:visited {
+    color: black;
+  }
+  .hashtags {
+    margin-top: 5px;
+    display: flex; /* 해시태그를 가로로 나열하기 위해 추가 */
+}
+
+.hashtags span {
+    margin-right: 5px;
+    margin-bottom: 5px; /* 버튼과 동일한 간격을 유지하기 위해 추가 */
+    display: inline-block; /* 해시태그를 가로로 나열하기 위해 추가 */
+    padding: 5px 10px; /* 버튼과 동일한 패딩을 적용 */
+    border: 1px solid #ccc; /* 버튼과 동일한 테두리 스타일 적용 */
+    border-radius: 5px; /* 버튼과 동일한 모서리 둥글기 적용 */
+}
