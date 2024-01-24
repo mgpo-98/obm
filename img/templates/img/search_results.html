@@ -4,7 +4,7 @@
     <input type="text" name="search" placeholder="Search by hashtag">
     <button type="submit">Search</button>
 </form>
-<h2>Search Results for "{{ query }}"</h2>
+<h2>검색결과 : "{{ query }}"</h2>
 <ul>
     {% for image in images %}
         <li>
@@ -17,12 +17,173 @@
         </li>
     {% endfor %}
 </ul>
-<h1>실시간 검색 순위</h1>
-<ul id="search-ranking">
-    {% for entry in search_history %}
-        <li>{{ entry.query }} ({{ entry.search_count }}회 검색)</li>
+
+<div class='btn_list'>
+
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-outline-primary" onclick="filterImages('all')">전체</button>
+        <button type="button" class="btn btn-outline-primary" onclick="filterImages('gif')">GIF</button>
+        <button type="button" class="btn btn-outline-primary" onclick="filterImages('normal')">일반</button>
+    </div>
+    
+    <form method="get" action="{% url 'img:search_results' %}" class="select">
+        <select name="items_per_page" id="items_per_page" onchange="this.form.submit()">
+            <option value="5" {% if items_per_page == 5 %}selected{% endif %}>5</option>
+            <option value="25" {% if items_per_page == 25 %}selected{% endif %}>25</option>
+            <option value="50" {% if items_per_page == 50 %}selected{% endif %}>50</option>
+            <option value="75" {% if items_per_page == 75 %}selected{% endif %}>75</option>
+            <option value="100" {% if items_per_page == 100 %}selected{% endif %}>100</option>
+        </select>
+    </form>
+    
+</div>
+<div>
+    <ul class='navbox' id='imageList'>   
+    {% for image in image_items %}
+        <li class='img_box' data-category="{{ image.category }}" data-image-id="{{ image.id }}">
+            <div>
+                <img src="{{ image.image.url }}" alt="Image">
+            </div>
+            <div class="hashtags">
+                <p>{% for hashtag in image.hashtags.all %}
+                    <span>{{ hashtag.name }} </span>
+                {% endfor %}</p>
+            </div>
+            
+        </li> 
+    {% empty %}
+        <p>등록된 이미지가 없습니다.</p>
     {% endfor %}
-</ul>
+    
+
+      
+    
+</div>
+{% comment %} 페이지 네이션  {% endcomment %}
+<div class="pagination">
+    <span class="step-links">
+      {% if image_items.has_previous %}
+        <a href="?page=1&items_per_page={{ items_per_page }}">first</a>
+        <a href="?page={{ image_items.previous_page_number }}&items_per_page={{ items_per_page }}">«</a>
+      {% endif %}
+  
+      {% for i in image_items.paginator.page_range %}
+        {% if image_items.number == i %}
+          <a href="?page={{ i }}&items_per_page={{ items_per_page }}" class="current">{{ i }}</a>
+        {% else %}
+          <a href="?page={{ i }}&items_per_page={{ items_per_page }}">{{ i }}</a>
+        {% endif %}
+      {% endfor %}
+  
+      {% if image_items.has_next %}
+        <a href="?page={{ image_items.next_page_number }}&items_per_page={{ items_per_page }}">next</a>
+        <a href="?page={{ image_items.paginator.num_pages }}&items_per_page={{ items_per_page }}">»</a>
+      {% endif %}
+    </span>
+  </div>
+<div id="overlay">
+    <span id="download-button">다운로드</span>
+</div>
+
+
+<script>
+
+
+    function filterImages(category) {
+        var images = document.querySelectorAll('.img_box');
+        images.forEach(function (img) {
+            var imgCategory = img.getAttribute('data-category');
+            var imgSrc = img.querySelector('img').getAttribute('src');
+
+            if (category === 'all' || (category === 'gif' && imgSrc.endsWith('.gif')) || (category === 'normal' && !imgSrc.endsWith('.gif'))) {
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+<script>
+        // CSRF 토큰을 가져오는 함수
+        function getCSRFToken() {
+            var csrfToken = null;
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.startsWith('csrftoken=')) {
+                    csrfToken = cookie.substring('csrftoken='.length, cookie.length);
+                    break;
+                }
+            }
+            return csrfToken;
+        }
+    document.addEventListener('DOMContentLoaded', function () {
+         // CSRF 토큰을 가져옴
+         var csrftoken = getCSRFToken();
+
+        var overlay = document.getElementById('overlay');
+        var overlayImg = document.createElement('img');
+        overlayImg.classList.add('overlay-img');
+        overlay.appendChild(overlayImg);
+
+        // 이미지 클릭 시 확대되도록 하는 코드
+        var images = document.querySelectorAll('.img_box img');
+        images.forEach(function (img) {
+            console.log('Image clicked:', img);
+            img.addEventListener('click', function (event) {
+                var clickedImg = event.target;  // 클릭된 이미지 엘리먼트
+                overlayImg.src = clickedImg.src;
+                overlay.style.display = 'flex';
+                var imageId = clickedImg.closest('.img_box').getAttribute('data-image-id');
+                
+                console.log('Clicked image ID:', imageId);
+        
+                var downloadButton = document.getElementById('download-button');
+                downloadButton.setAttribute('data-image-id', imageId);
+            });
+        });
+        
+
+        // 다운로드 버튼 클릭 시 이미지 다운로드
+        var downloadButton = document.getElementById('download-button');
+        downloadButton.addEventListener('click', function () {
+            var imageId = downloadButton.getAttribute('data-image-id');
+            // 이미지 다운로드 요청을 서버로 보냅니다.
+            $.ajax({
+                type: 'POST',
+                url: `/img/download/${imageId}/`,  // 실제 변수를 사용하세요
+                headers: {'X-CSRFToken': csrftoken},  // CSRF 토큰 추가
+                success: function (data) {
+                    // 성공 시 처리
+                    console.log('다운로드 성공');
+                    var link = document.createElement('a');
+                    link.href = overlayImg.src;
+                    link.download = 'image.jpg';
+                    link.click();
+                },
+                error: function () {
+                    // 실패 시 처리
+                    console.error('다운로드 실패');
+                }
+            });
+            
+        });
+        
+
+        // 오버레이 영역 클릭 시 확대 이미지 숨기기
+        overlay.addEventListener('click', function () {
+            overlay.style.display = 'none';
+        });
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        
+    });
+</script>
+
 {% endblock %}
 
 

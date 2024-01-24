@@ -59,11 +59,30 @@ def image_list(request):
         
     context = {
         'image_items': image_items, 
-        'items_per_page': items_per_page}
+        'items_per_page': items_per_page
+        }
     return render(request, 'img/image_list.html', context)
 
 def search_images(request):
     query = request.GET.get('search')
+    
+    image_items = Image.objects.all()
+
+    
+    # 페이지당 보여질 이미지 수
+    items_per_page = int(request.GET.get('items_per_page', 25))  # 기본값은 25
+    paginator = Paginator(image_items, items_per_page)
+    
+    page = request.GET.get('page')
+    try:
+        image_items = paginator.page(page)
+    except PageNotAnInteger:
+        # 페이지 파라미터가 정수가 아닌 경우, 첫 페이지를 가져옵니다.
+        image_items = paginator.page(1)
+    except EmptyPage:
+        # 페이지가 범위를 벗어나면 마지막 페이지를 가져옵니다.
+        
+        image_items = paginator.page(paginator.num_pages)
     if query:
         # 검색 내역 저장
         current_time = timezone.now()
@@ -84,7 +103,15 @@ def search_images(request):
         .order_by('-search_count')[:10]
     )
     images = Image.objects.filter(hashtags__name__icontains=query)  # 검색어를 포함하는 이미지를 필터링
-    return render(request, 'img/search_results.html', {'images': images, 'query': query, 'search_history':search_history})
+    
+    context ={
+        'images': images,
+        'query': query, 
+        'search_history':search_history,
+        'image_items': image_items, 
+        'items_per_page': items_per_page
+        }
+    return render(request, 'img/search_results.html', context)
 
 @require_POST
 def download_image(request, image_id):

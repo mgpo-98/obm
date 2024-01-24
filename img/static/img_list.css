@@ -11,6 +11,7 @@
 .img_box {
     box-sizing: border-box;
     text-align: left; /* 중앙 정렬 방지 */
+    list-style-type: none; /* 목록 스타일 제거 */
 }
 
 .img_box img {
@@ -21,9 +22,7 @@
     margin: 0 auto; /* 이미지를 가운데 정렬 */
 }
 
-.hashtags {
-    margin-top: 5px;
-}
+
 
 .hashtags span {
     margin-right: 5px;
@@ -158,13 +157,24 @@ body {
   .hashtags {
     margin-top: 5px;
     display: flex; /* 해시태그를 가로로 나열하기 위해 추가 */
+    max-height: 30px; /* 높이를 최대 30px로 제한 */
+    
+}
+.hashtags p {
+    margin: 0; /* 기본 마진 제거 */
 }
 
 .hashtags span {
     margin-right: 5px;
     margin-bottom: 5px; /* 버튼과 동일한 간격을 유지하기 위해 추가 */
     display: inline-block; /* 해시태그를 가로로 나열하기 위해 추가 */
-    padding: 5px 10px; /* 버튼과 동일한 패딩을 적용 */
-    border: 1px solid #ccc; /* 버튼과 동일한 테두리 스타일 적용 */
+    padding: 2px 8px; /* 크기 조정 */
+    font-size: 12px; /* 폰트 크기 조정 */
     border-radius: 5px; /* 버튼과 동일한 모서리 둥글기 적용 */
+    max-height: 20px; /* 해시태그 영역의 높이를 최대 20px로 제한 */
+    overflow: hidden; /* 넘치는 내용을 감추기 */
+    white-space: nowrap; /* 텍스트가 한 줄로만 */
+    text-overflow: ellipsis; /* 넘치는 텍스트에 대한 생략 부호(...) 표시 */
+    box-sizing: border-box; /* 패딩과 테두리를 포함하여 요소의 크기를 계산 */
+    
 }
