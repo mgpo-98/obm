@@ -1,22 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<form method="get" action="{% url 'img:search_images' %}">
-    <input type="text" name="search" placeholder="Search by hashtag">
-    <button type="submit">Search</button>
-</form>
+
 <h2>검색결과 : "{{ query }}"</h2>
-<ul>
-    {% for image in images %}
-        <li>
-            <img src="{{ image.image.url }}" alt="{{ image.title }}">
-            <!-- 이미지 및 관련 정보 표시 -->
-            <p>해시태그: {% for hashtag in image.hashtags.all %}
-                <span>{{ hashtag.name }} </span>
-                    {% endfor %}</p>
-            </div>
-        </li>
-    {% endfor %}
-</ul>
 
 <div class='btn_list'>
 
@@ -26,7 +11,7 @@
         <button type="button" class="btn btn-outline-primary" onclick="filterImages('normal')">일반</button>
     </div>
     
-    <form method="get" action="{% url 'img:search_results' %}" class="select">
+    <form method="get" action="{% url 'img:search_images' %}" class="select">
         <select name="items_per_page" id="items_per_page" onchange="this.form.submit()">
             <option value="5" {% if items_per_page == 5 %}selected{% endif %}>5</option>
             <option value="25" {% if items_per_page == 25 %}selected{% endif %}>25</option>
@@ -39,7 +24,7 @@
 </div>
 <div>
     <ul class='navbox' id='imageList'>   
-    {% for image in image_items %}
+    {% for image in images %}
         <li class='img_box' data-category="{{ image.category }}" data-image-id="{{ image.id }}">
             <div>
                 <img src="{{ image.image.url }}" alt="Image">
@@ -49,42 +34,36 @@
                     <span>{{ hashtag.name }} </span>
                 {% endfor %}</p>
             </div>
-            
         </li> 
     {% empty %}
-        <p>등록된 이미지가 없습니다.</p>
+        <p>검색 결과가 없습니다.</p>
     {% endfor %}
-    
-
-      
-    
 </div>
 {% comment %} 페이지 네이션  {% endcomment %}
 <div class="pagination">
     <span class="step-links">
-      {% if image_items.has_previous %}
+      {% if images.has_previous %}
         <a href="?page=1&items_per_page={{ items_per_page }}">first</a>
-        <a href="?page={{ image_items.previous_page_number }}&items_per_page={{ items_per_page }}">«</a>
+        <a href="?page={{ images.previous_page_number }}&items_per_page={{ items_per_page }}">«</a>
       {% endif %}
   
-      {% for i in image_items.paginator.page_range %}
-        {% if image_items.number == i %}
+      {% for i in images.paginator.page_range %}
+        {% if images.number == i %}
           <a href="?page={{ i }}&items_per_page={{ items_per_page }}" class="current">{{ i }}</a>
         {% else %}
           <a href="?page={{ i }}&items_per_page={{ items_per_page }}">{{ i }}</a>
         {% endif %}
       {% endfor %}
   
-      {% if image_items.has_next %}
-        <a href="?page={{ image_items.next_page_number }}&items_per_page={{ items_per_page }}">next</a>
-        <a href="?page={{ image_items.paginator.num_pages }}&items_per_page={{ items_per_page }}">»</a>
+      {% if images.has_next %}
+        <a href="?page={{ images.next_page_number }}&items_per_page={{ items_per_page }}">next</a>
+        <a href="?page={{ images.paginator.num_pages }}&items_per_page={{ items_per_page }}">»</a>
       {% endif %}
     </span>
-  </div>
+</div>
 <div id="overlay">
     <span id="download-button">다운로드</span>
 </div>
-
 
 <script>
 
@@ -136,7 +115,6 @@
                 overlayImg.src = clickedImg.src;
                 overlay.style.display = 'flex';
                 var imageId = clickedImg.closest('.img_box').getAttribute('data-image-id');
-                
                 console.log('Clicked image ID:', imageId);
         
                 var downloadButton = document.getElementById('download-button');
@@ -185,5 +163,3 @@
 </script>
 
 {% endblock %}
-
-
