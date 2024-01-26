@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-
+{% load static %}
+<link rel="stylesheet" href="{% static 'upload.css' %}">
 <h2>검색결과 : "{{ query }}"</h2>
 
 <div class='btn_list'>
