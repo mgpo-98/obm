@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'upload.css' %}">
+<link rel="stylesheet" href="{% static 'img_search.css' %}">
 <h2>검색결과 : "{{ query }}"</h2>
 
 <div class='btn_list'>
@@ -35,10 +35,15 @@
                     <span>{{ hashtag.name }} </span>
                 {% endfor %}</p>
             </div>
+            
         </li> 
     {% empty %}
         <p>검색 결과가 없습니다.</p>
     {% endfor %}
+    
+
+      
+    
 </div>
 {% comment %} 페이지 네이션  {% endcomment %}
 <div class="pagination">
@@ -69,19 +74,19 @@
 <script>
 
 
-    function filterImages(category) {
-        var images = document.querySelectorAll('.img_box');
-        images.forEach(function (img) {
-            var imgCategory = img.getAttribute('data-category');
-            var imgSrc = img.querySelector('img').getAttribute('src');
+function filterImages(category) {
+    var images = document.querySelectorAll('.img_box');
+    images.forEach(function (img) {
+        var imgCategory = img.getAttribute('data-category');
+        var imgSrc = img.querySelector('img').getAttribute('src');
 
-            if (category === 'all' || (category === 'gif' && imgSrc.endsWith('.gif')) || (category === 'normal' && !imgSrc.endsWith('.gif'))) {
-                img.style.display = 'block';
-            } else {
-                img.style.display = 'none';
-            }
-        });
-    }
+        if (category === 'all' || (category === 'gif' && imgSrc.endsWith('.gif')) || (category === 'normal' && !imgSrc.endsWith('.gif'))) {
+            img.style.display = 'block';
+        } else {
+            img.style.display = 'none';
+        }
+    });
+}
 </script>
 
 <script>

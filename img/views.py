@@ -87,7 +87,7 @@ def search_images(request):
         # 검색 내역 저장
         current_time = timezone.now()
         SearchHistory.objects.create(query=query, search_time=current_time)
-        results = Hashtag.objects.filter(name__icontains=query)
+        hashtag = Hashtag.objects.filter(name__icontains=query)
         search_history = (
         SearchHistory.objects
         .values('query')
@@ -95,7 +95,7 @@ def search_images(request):
         .order_by('-search_count')[:10]
     )
     else:
-        results = Hashtag.objects.all()
+        hashtag = Hashtag.objects.all()
         search_history = (
         SearchHistory.objects
         .values('query')
@@ -103,7 +103,7 @@ def search_images(request):
         .order_by('-search_count')[:10]
     )
     images = Image.objects.filter(hashtags__name__icontains=query)  # 검색어를 포함하는 이미지를 필터링
-    
+    print(query)
     context ={
         'images': images,
         'query': query, 
