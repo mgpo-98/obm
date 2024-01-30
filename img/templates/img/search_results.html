@@ -19,6 +19,7 @@
             <option value="50" {% if items_per_page == 50 %}selected{% endif %}>50</option>
             <option value="75" {% if items_per_page == 75 %}selected{% endif %}>75</option>
             <option value="100" {% if items_per_page == 100 %}selected{% endif %}>100</option>
+            <input type="hidden" name="search" value="{{ query }}">
         </select>
     </form>
     
@@ -45,28 +46,29 @@
       
     
 </div>
-{% comment %} 페이지 네이션  {% endcomment %}
+<!-- 페이지 네이션 -->
 <div class="pagination">
     <span class="step-links">
-      {% if images.has_previous %}
-        <a href="?page=1&items_per_page={{ items_per_page }}">first</a>
-        <a href="?page={{ images.previous_page_number }}&items_per_page={{ items_per_page }}">«</a>
-      {% endif %}
-  
-      {% for i in images.paginator.page_range %}
-        {% if images.number == i %}
-          <a href="?page={{ i }}&items_per_page={{ items_per_page }}" class="current">{{ i }}</a>
-        {% else %}
-          <a href="?page={{ i }}&items_per_page={{ items_per_page }}">{{ i }}</a>
+        {% if images.has_previous %}
+            <a href="?page=1&items_per_page={{ items_per_page }}&search={{ query }}">first</a>
+            <a href="?page={{ images.previous_page_number }}&items_per_page={{ items_per_page }}&search={{ query }}">«</a>
         {% endif %}
-      {% endfor %}
-  
-      {% if images.has_next %}
-        <a href="?page={{ images.next_page_number }}&items_per_page={{ items_per_page }}">next</a>
-        <a href="?page={{ images.paginator.num_pages }}&items_per_page={{ items_per_page }}">»</a>
-      {% endif %}
+
+        {% for i in images.paginator.page_range %}
+            {% if images.number == i %}
+                <span class="current">{{ i }}</span>
+            {% else %}
+                <a href="?page={{ i }}&items_per_page={{ items_per_page }}&search={{ query }}">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if images.has_next %}
+            <a href="?page={{ images.next_page_number }}&items_per_page={{ items_per_page }}&search={{ query }}">next</a>
+            <a href="?page={{ images.paginator.num_pages }}&items_per_page={{ items_per_page }}&search={{ query }}">»</a>
+        {% endif %}
     </span>
 </div>
+
 <div id="overlay">
     <span id="download-button">다운로드</span>
 </div>
