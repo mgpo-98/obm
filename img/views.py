@@ -56,7 +56,7 @@ def image_list(request):
     except EmptyPage:
         # 페이지가 범위를 벗어나면 마지막 페이지를 가져옵니다.
         image_items = paginator.page(paginator.num_pages)
-        
+       
     context = {
         'image_items': image_items, 
         'items_per_page': items_per_page
@@ -74,6 +74,7 @@ def search_images(request):
     paginator = Paginator(image_items, items_per_page)
     
     page = request.GET.get('page')
+    print(page)
     try:
         image_items = paginator.page(page)
     except PageNotAnInteger:
@@ -103,7 +104,8 @@ def search_images(request):
         .order_by('-search_count')[:10]
     )
     images = Image.objects.filter(hashtags__name__icontains=query)  # 검색어를 포함하는 이미지를 필터링
-    print(query)
+    print(1)
+    print(items_per_page)
     context ={
         'images': images,
         'query': query, 
