@@ -33,20 +33,23 @@
         <li class='img_box' data-category="{{ image.category }}" data-image-id="{{ image.id }}">
             <div>
                 <img src="{{ image.image.url }}" alt="Image">
+           
+
+                <div class="hashtags">
+                    <p>
+                        {% for hashtag in image.hashtags.all %}
+                            <a href="{% url 'img:search_images' %}?search={{ hashtag.name|urlencode }}&items_per_page={{ items_per_page }}">
+                                <span>{{ hashtag.name }} </span>
+                            </a>
+                        {% endfor %}
+                    </p>
+                </div>
             </div>
-            <div class="hashtags">
-                <p>{% for hashtag in image.hashtags.all %}
-                    <a href="{% url 'img:search_images' %}?search={{ hashtag.name }}&items_per_page={{ items_per_page }}">
-                    <span>{{ hashtag.name }} </span>
-                    </a>
-                {% endfor %}</p>
-            </div>
-            
         </li> 
     {% empty %}
         <p>등록된 이미지가 없습니다.</p>
     {% endfor %}
-    
+    </ul>
 
       
     

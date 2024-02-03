@@ -20,7 +20,8 @@ def index(request):
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
             image = form.save(commit=False)
-            hashtags = form.cleaned_data.get('hashtags', '').split()
+            hashtags = [tag.replace('"', '').replace(',', '') for tag in form.cleaned_data.get('hashtags', '').split()]
+            
             image.save()
             for tag in hashtags:
                 hashtag, created = Hashtag.objects.get_or_create(name=tag)
