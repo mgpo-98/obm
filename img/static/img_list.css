@@ -12,6 +12,7 @@
     box-sizing: border-box;
     text-align: left;
     list-style-type: none;
+    margin-bottom: 20px;
 }
 
 .img_box img {
@@ -152,8 +153,10 @@ body {
   }
   .hashtags {
     margin-top: 5px;
+    margin-bottom: 5px;
     display: flex; /* 해시태그를 가로로 나열하기 위해 추가 */
-    max-height: 30px; /* 높이를 최대 30px로 제한 */
+    max-height: 80px; /* 높이를 최대 30px로 제한 */
+    overflow: hidden; /* 넘치는 내용을 감추기 */
     
 }
 .hashtags p {
@@ -164,7 +167,7 @@ body {
     margin-right: 5px;
     margin-bottom: 5px; /* 버튼과 동일한 간격을 유지하기 위해 추가 */
     display: inline-block; /* 해시태그를 가로로 나열하기 위해 추가 */
-    padding: 2px 8px; /* 크기 조정 */
+    padding: 2px 6px; /* 크기 조정 */
     font-size: 12px; /* 폰트 크기 조정 */
     border-radius: 5px; /* 버튼과 동일한 모서리 둥글기 적용 */
     max-height: 20px; /* 해시태그 영역의 높이를 최대 20px로 제한 */
@@ -177,7 +180,7 @@ body {
 /* 이미지 목록 페이지에서 해시태그 스타일 */
 .hashtags a {
     display: inline-block;
-    padding: 5px 10px;
+    padding: -1px;
     margin: 5px;
     background-color: #f2f2f2; /* 배경색 설정 */
     color: #000000; /* 글자색 설정 */
