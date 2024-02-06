@@ -115,28 +115,45 @@
         }
     document.addEventListener('DOMContentLoaded', function () {
          // CSRF 토큰을 가져옴
-         var csrftoken = getCSRFToken();
+        var csrftoken = getCSRFToken();
 
         var overlay = document.getElementById('overlay');
         var overlayImg = document.createElement('img');
         overlayImg.classList.add('overlay-img');
         overlay.appendChild(overlayImg);
+        var overlayHashtags = document.createElement('div');
+        overlayHashtags.classList.add('overlay-hashtags');
+        overlay.appendChild(overlayHashtags);
 
         // 이미지 클릭 시 확대되도록 하는 코드
-        var images = document.querySelectorAll('.img_box img');
-        images.forEach(function (img) {
-            console.log('Image clicked:', img);
-            img.addEventListener('click', function (event) {
-                var clickedImg = event.target;  // 클릭된 이미지 엘리먼트
-                overlayImg.src = clickedImg.src;
-                overlay.style.display = 'flex';
-                var imageId = clickedImg.closest('.img_box').getAttribute('data-image-id');
-                console.log('Clicked image ID:', imageId);
-        
-                var downloadButton = document.getElementById('download-button');
-                downloadButton.setAttribute('data-image-id', imageId);
+    var images = document.querySelectorAll('.img_box img');
+    images.forEach(function (img) {
+        img.addEventListener('click', function (event) {
+            var clickedImg = event.target;  // 클릭된 이미지 엘리먼트
+            overlayImg.src = clickedImg.src;
+            overlay.style.display = 'flex';
+            var imageId = clickedImg.closest('.img_box').getAttribute('data-image-id');
+            console.log('Clicked image ID:', imageId);
+
+            var downloadButton = document.getElementById('download-button');
+            downloadButton.setAttribute('data-image-id', imageId);
+
+            // 해당 이미지의 해시태그 가져오기
+            var hashtagsContainer = clickedImg.closest('.img_box').querySelector('.hashtags');
+            var hashtags = hashtagsContainer.querySelectorAll('span');
+
+            // 가져온 해시태그를 overlayHashtags에 추가
+            overlayHashtags.innerHTML = '';
+            hashtags.forEach(function (hashtag) {
+                var clonedHashtag = hashtag.cloneNode(true);
+                overlayHashtags.appendChild(clonedHashtag);
             });
+
+            var downloadButton = document.getElementById('download-button');
+            downloadButton.setAttribute('data-image-id', imageId);
         });
+    });
+
         
 
         // 다운로드 버튼 클릭 시 이미지 다운로드
@@ -168,6 +185,7 @@
         // 오버레이 영역 클릭 시 확대 이미지 숨기기
         overlay.addEventListener('click', function () {
             overlay.style.display = 'none';
+            overlayHashtags.innerHTML = ''; // 이미지가 닫힐 때 overlayHashtags를 비워줍니다.
         });
     });
 

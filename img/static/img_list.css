@@ -161,6 +161,7 @@ body {
 }
 .hashtags p {
     margin: 0; /* 기본 마진 제거 */
+    padding: 0px;
 }
 
 .hashtags span {
