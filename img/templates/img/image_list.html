@@ -30,7 +30,8 @@
 <div>
     <ul class='navbox' id='imageList'>   
     {% for image in image_items %}
-        <li class='img_box' data-category="{{ image.category }}" data-image-id="{{ image.id }}">
+        <li class='img_box' data-category="{{ image.category }}" data-image-id="{{ image.id }}"data-hashtags="{% for hashtag in image.hashtags.all %}{{ hashtag.name }}{% if not forloop.last %},{% endif %}{% endfor %}">
+
             <div>
                 <img src="{{ image.image.url }}" alt="Image">
            
@@ -76,9 +77,14 @@
       {% endif %}
     </span>
   </div>
+<!-- 이미지 확대를 위한 오버레이 영역 -->
 <div id="overlay">
-    <span id="download-button">다운로드</span>
+    <div class="overlay-content">
+        <!-- 이미지 및 해시태그는 여기에 추가됨 -->
+        <span id="download-button">다운로드</span>
+    </div>
 </div>
+
 
 
 <script>
@@ -126,33 +132,42 @@
         overlay.appendChild(overlayHashtags);
 
         // 이미지 클릭 시 확대되도록 하는 코드
+    // 이미지 클릭 시 확대되도록 하는 코드
     var images = document.querySelectorAll('.img_box img');
     images.forEach(function (img) {
         img.addEventListener('click', function (event) {
             var clickedImg = event.target;  // 클릭된 이미지 엘리먼트
+
+            // 이미지에 대한 정보 가져오기
+            var imageInfo = clickedImg.closest('.img_box').dataset;
+            var imageId = imageInfo.imageId;
+            var hashtags = imageInfo.hashtags.split(',');
+
+            // 확대된 이미지에 정보 표시
             overlayImg.src = clickedImg.src;
             overlay.style.display = 'flex';
-            var imageId = clickedImg.closest('.img_box').getAttribute('data-image-id');
             console.log('Clicked image ID:', imageId);
+            console.log('Hashtags:', hashtags);
 
             var downloadButton = document.getElementById('download-button');
             downloadButton.setAttribute('data-image-id', imageId);
-
-            // 해당 이미지의 해시태그 가져오기
-            var hashtagsContainer = clickedImg.closest('.img_box').querySelector('.hashtags');
-            var hashtags = hashtagsContainer.querySelectorAll('span');
 
             // 가져온 해시태그를 overlayHashtags에 추가
             overlayHashtags.innerHTML = '';
             hashtags.forEach(function (hashtag) {
-                var clonedHashtag = hashtag.cloneNode(true);
-                overlayHashtags.appendChild(clonedHashtag);
+                var span = document.createElement('span');
+                span.textContent = hashtag;
+                overlayHashtags.appendChild(span);
             });
 
-            var downloadButton = document.getElementById('download-button');
-            downloadButton.setAttribute('data-image-id', imageId);
+            // 이미지 아래에 정보를 표시하는 코드
+            var overlayContent = document.querySelector('.overlay-content');
+            overlayContent.appendChild(overlayImg);
+            overlayContent.appendChild(overlayHashtags);
         });
     });
+
+});
 
         
 
