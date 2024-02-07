@@ -37,14 +37,20 @@
            
 
                 <div class="hashtags">
-                    <p>
+                    <p class="hashtags-list">
                         {% for hashtag in image.hashtags.all %}
                             <a href="{% url 'img:search_images' %}?search={{ hashtag.name|urlencode }}&items_per_page={{ items_per_page }}">
                                 <span>{{ hashtag.name }} </span>
                             </a>
                         {% endfor %}
                     </p>
+                    {% if image.hashtags.count > 3 %}
+                        <p class="hashtags-toggle" onclick="toggleHashtags(this, '{{ image.id }}')">더보기</p>
+                    {% endif %}
                 </div>
+                
+                
+                
             </div>
         </li> 
     {% empty %}
@@ -88,6 +94,51 @@
 
 
 <script>
+// 이미지 클릭 시 또는 더보기 클릭 시 오버레이 생성
+function openOverlay(imageId) {
+    var overlay = document.getElementById('overlay');
+    var overlayImg = document.createElement('img');
+    overlayImg.classList.add('overlay-img');
+    overlay.appendChild(overlayImg);
+    var overlayHashtags = document.createElement('div');
+    overlayHashtags.classList.add('overlay-hashtags');
+    overlay.appendChild(overlayHashtags);
+
+    // 해당 이미지의 해시태그 가져오기
+    var hashtagsContainer = document.querySelector('.img_box[data-image-id="' + imageId + '"] .hashtags-list');
+    var hashtags = hashtagsContainer.querySelectorAll('span');
+
+    // 가져온 해시태그를 overlayHashtags에 추가
+    overlayHashtags.innerHTML = '';
+    hashtags.forEach(function (hashtag) {
+        var clonedHashtag = hashtag.cloneNode(true);
+        overlayHashtags.appendChild(clonedHashtag);
+    });
+
+    // 이미지 클릭 시 확대되도록 하는 코드
+    var images = document.querySelectorAll('.img_box[data-image-id="' + imageId + '"] img');
+    images.forEach(function (img) {
+        img.addEventListener('click', function (event) {
+            var clickedImg = event.target;  // 클릭된 이미지 엘리먼트
+            overlayImg.src = clickedImg.src;
+            overlay.style.display = 'flex';
+
+            var downloadButton = document.getElementById('download-button');
+            downloadButton.setAttribute('data-image-id', imageId);
+        });
+    });
+}
+
+// 해시태그 더보기/접기 토글 함수
+function toggleHashtags(element, imageId) {
+    openOverlay(imageId);
+
+    var hashtagsList = element.previousElementSibling;
+    var isHidden = hashtagsList.classList.toggle('collapsed');
+
+    // 토글 상태에 따라 더보기 또는 접기 텍스트 변경
+    element.textContent = isHidden ? '더보기' : '접기';
+}
 
 
     function filterImages(category) {
@@ -132,7 +183,6 @@
         overlay.appendChild(overlayHashtags);
 
         // 이미지 클릭 시 확대되도록 하는 코드
-    // 이미지 클릭 시 확대되도록 하는 코드
     var images = document.querySelectorAll('.img_box img');
     images.forEach(function (img) {
         img.addEventListener('click', function (event) {
@@ -158,15 +208,12 @@
                 var span = document.createElement('span');
                 span.textContent = hashtag;
                 overlayHashtags.appendChild(span);
-            });
-
+        });
             // 이미지 아래에 정보를 표시하는 코드
             var overlayContent = document.querySelector('.overlay-content');
             overlayContent.appendChild(overlayImg);
             overlayContent.appendChild(overlayHashtags);
-        });
-    });
-
+});
 });
 
         

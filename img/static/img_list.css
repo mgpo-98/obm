@@ -171,7 +171,7 @@ body {
     margin-bottom: 5px;
     display: flex; /* 해시태그를 가로로 나열하기 위해 추가 */
     max-height: 80px; /* 높이를 최대 30px로 제한 */
-    overflow: hidden; /* 넘치는 내용을 감추기 */
+   /*  overflow: hidden; /* 넘치는 내용을 감추기 */
     
 }
 .hashtags p {
@@ -187,7 +187,7 @@ body {
     font-size: 12px; /* 폰트 크기 조정 */
     border-radius: 5px; /* 버튼과 동일한 모서리 둥글기 적용 */
     max-height: 20px; /* 해시태그 영역의 높이를 최대 20px로 제한 */
-    overflow: hidden; /* 넘치는 내용을 감추기 */
+    /* overflow: hidden; /* 넘치는 내용을 감추기 */
     white-space: nowrap; /* 텍스트가 한 줄로만 */
     text-overflow: ellipsis; /* 넘치는 텍스트에 대한 생략 부호(...) 표시 */
     box-sizing: border-box; /* 패딩과 테두리를 포함하여 요소의 크기를 계산 */
@@ -208,4 +208,20 @@ body {
 /* 이미지 목록 페이지에서 해시태그에 호버 효과 스타일 */
 .hashtags a:hover {
     background-color: #e0e0e0; /* 호버시 배경색 변경 */
+}
+
+
+.hashtags-list {
+   /* overflow: hidden; */
+    max-height: 3em; /* 초기에 세 줄 이내로 표시 */
+    transition: max-height 0.5s ease; /* 부드러운 애니메이션 적용 */
+}
+
+.hashtags-list.collapsed {
+    max-height: none; /* 더보기 클릭 시 전체 표시 */
+}
+
+.hashtags-toggle {
+    cursor: pointer;
+    color: blue; /* 더보기 텍스트 스타일링 (원하는 색상으로 변경) */
 }
