@@ -6,16 +6,13 @@
 
 <link rel="stylesheet" href="{% static 'img_list.css' %}">
 
-
-
 <div class='btn_list'>
-
     <div class="btn-group" role="group" aria-label="Basic outlined example">
         <button type="button" class="btn btn-outline-primary" onclick="filterImages('all')">전체</button>
         <button type="button" class="btn btn-outline-primary" onclick="filterImages('gif')">GIF</button>
         <button type="button" class="btn btn-outline-primary" onclick="filterImages('normal')">일반</button>
     </div>
-    
+
     <form method="get" action="{% url 'img:image_list' %}" class="select">
         <select name="items_per_page" id="items_per_page" onchange="this.form.submit()">
             <option value="5" {% if items_per_page == 5 %}selected{% endif %}>5</option>
@@ -25,64 +22,57 @@
             <option value="100" {% if items_per_page == 100 %}selected{% endif %}>100</option>
         </select>
     </form>
-    
+
 </div>
 <div>
-    <ul class='navbox' id='imageList'>   
-    {% for image in image_items %}
-        <li class='img_box' data-category="{{ image.category }}" data-image-id="{{ image.id }}"data-hashtags="{% for hashtag in image.hashtags.all %}{{ hashtag.name }}{% if not forloop.last %},{% endif %}{% endfor %}">
+    <ul class='navbox' id='imageList'>
+        {% for image in image_items %}
+        <li class='img_box' data-category="{{ image.category }}" data-image-id="{{ image.id }}" data-hashtags="{% for hashtag in image.hashtags.all %}{{ hashtag.name }}{% if not forloop.last %},{% endif %}{% endfor %}">
 
             <div>
                 <img src="{{ image.image.url }}" alt="Image">
-           
 
                 <div class="hashtags">
                     <p class="hashtags-list">
                         {% for hashtag in image.hashtags.all %}
-                            <a href="{% url 'img:search_images' %}?search={{ hashtag.name|urlencode }}&items_per_page={{ items_per_page }}">
-                                <span>{{ hashtag.name }} </span>
-                            </a>
+                        <a href="{% url 'img:search_images' %}?search={{ hashtag.name|urlencode }}&items_per_page={{ items_per_page }}">
+                            <span>{{ hashtag.name }} </span>
+                        </a>
                         {% endfor %}
                     </p>
                     {% if image.hashtags.count > 3 %}
-                        <p class="hashtags-toggle" onclick="toggleHashtags(this, '{{ image.id }}')">더보기</p>
+                    <p class="hashtags-toggle" onclick="toggleHashtags(this, '{{ image.id }}')">더보기</p>
                     {% endif %}
                 </div>
-                
-                
-                
             </div>
-        </li> 
-    {% empty %}
+        </li>
+        {% empty %}
         <p>등록된 이미지가 없습니다.</p>
-    {% endfor %}
+        {% endfor %}
     </ul>
-
-      
-    
 </div>
 {% comment %} 페이지 네이션  {% endcomment %}
 <div class="pagination">
     <span class="step-links">
-      {% if image_items.has_previous %}
+        {% if image_items.has_previous %}
         <a href="?page=1&items_per_page={{ items_per_page }}">first</a>
         <a href="?page={{ image_items.previous_page_number }}&items_per_page={{ items_per_page }}">«</a>
-      {% endif %}
-  
-      {% for i in image_items.paginator.page_range %}
-        {% if image_items.number == i %}
-          <a href="?page={{ i }}&items_per_page={{ items_per_page }}" class="current">{{ i }}</a>
-        {% else %}
-          <a href="?page={{ i }}&items_per_page={{ items_per_page }}">{{ i }}</a>
         {% endif %}
-      {% endfor %}
-  
-      {% if image_items.has_next %}
+
+        {% for i in image_items.paginator.page_range %}
+        {% if image_items.number == i %}
+        <a href="?page={{ i }}&items_per_page={{ items_per_page }}" class="current">{{ i }}</a>
+        {% else %}
+        <a href="?page={{ i }}&items_per_page={{ items_per_page }}">{{ i }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if image_items.has_next %}
         <a href="?page={{ image_items.next_page_number }}&items_per_page={{ items_per_page }}">next</a>
         <a href="?page={{ image_items.paginator.num_pages }}&items_per_page={{ items_per_page }}">»</a>
-      {% endif %}
+        {% endif %}
     </span>
-  </div>
+</div>
 <!-- 이미지 확대를 위한 오버레이 영역 -->
 <div id="overlay">
     <div class="overlay-content">
@@ -92,54 +82,59 @@
 </div>
 
 
-
 <script>
-// 이미지 클릭 시 또는 더보기 클릭 시 오버레이 생성
-function openOverlay(imageId) {
-    var overlay = document.getElementById('overlay');
-    var overlayImg = document.createElement('img');
-    overlayImg.classList.add('overlay-img');
-    overlay.appendChild(overlayImg);
-    var overlayHashtags = document.createElement('div');
-    overlayHashtags.classList.add('overlay-hashtags');
-    overlay.appendChild(overlayHashtags);
+    // 이미지 클릭 시 또는 더보기 클릭 시 오버레이 생성
+    function openOverlay(imageId, hashtags) {
+        var overlay = document.getElementById('overlay');
+        var overlayImg = document.createElement('img');
+        overlayImg.classList.add('overlay-img');
+        overlay.appendChild(overlayImg);
+        var overlayHashtags = document.createElement('div');
+        overlayHashtags.classList.add('overlay-hashtags');
+        overlay.appendChild(overlayHashtags);
 
-    // 해당 이미지의 해시태그 가져오기
-    var hashtagsContainer = document.querySelector('.img_box[data-image-id="' + imageId + '"] .hashtags-list');
-    var hashtags = hashtagsContainer.querySelectorAll('span');
-
-    // 가져온 해시태그를 overlayHashtags에 추가
-    overlayHashtags.innerHTML = '';
-    hashtags.forEach(function (hashtag) {
-        var clonedHashtag = hashtag.cloneNode(true);
-        overlayHashtags.appendChild(clonedHashtag);
-    });
-
-    // 이미지 클릭 시 확대되도록 하는 코드
-    var images = document.querySelectorAll('.img_box[data-image-id="' + imageId + '"] img');
-    images.forEach(function (img) {
-        img.addEventListener('click', function (event) {
-            var clickedImg = event.target;  // 클릭된 이미지 엘리먼트
-            overlayImg.src = clickedImg.src;
-            overlay.style.display = 'flex';
-
-            var downloadButton = document.getElementById('download-button');
-            downloadButton.setAttribute('data-image-id', imageId);
+        // 가져온 해시태그를 overlayHashtags에 추가
+        overlayHashtags.innerHTML = '';
+        hashtags.forEach(function (hashtag) {
+            var span = document.createElement('span');
+            span.textContent = hashtag;
+            overlayHashtags.appendChild(span);
         });
-    });
-}
 
-// 해시태그 더보기/접기 토글 함수
-function toggleHashtags(element, imageId) {
-    openOverlay(imageId);
+        // 이미지 클릭 시 확대되도록 하는 코드
+        var images = document.querySelectorAll('.img_box[data-image-id="' + imageId + '"] img');
+        images.forEach(function (img) {
+            img.addEventListener('click', function (event) {
+                var clickedImg = event.target;  // 클릭된 이미지 엘리먼트
+                overlayImg.src = clickedImg.src;
+                overlay.style.display = 'flex';
 
-    var hashtagsList = element.previousElementSibling;
-    var isHidden = hashtagsList.classList.toggle('collapsed');
+                var downloadButton = document.getElementById('download-button');
+                downloadButton.setAttribute('data-image-id', imageId);
+            });
+        });
+    }
 
-    // 토글 상태에 따라 더보기 또는 접기 텍스트 변경
-    element.textContent = isHidden ? '더보기' : '접기';
-}
+    // 이미지 클릭 이벤트 함수
+    function imageClickEvent(imageId) {
+        var imageBox = document.querySelector('.img_box[data-image-id="' + imageId + '"]');
+        var hashtags = imageBox.dataset.hashtags.split(',');
+        openOverlay(imageId, hashtags);
+    }
 
+    // 더보기 클릭 이벤트 함수
+    function toggleHashtags(element, imageId) {
+        var hashtagsList = element.previousElementSibling;
+        var isHidden = hashtagsList.classList.toggle('collapsed');
+
+        // 토글 상태에 따라 더보기 또는 접기 텍스트 변경
+        element.textContent = isHidden ? '더보기' : '접기';
+
+        // 더보기 클릭 시 이미지 클릭 이벤트 발생
+        if (!isHidden) {
+            imageClickEvent(imageId);
+        }
+    }
 
     function filterImages(category) {
         var images = document.querySelectorAll('.img_box');
