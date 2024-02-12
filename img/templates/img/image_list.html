@@ -82,74 +82,7 @@
 </div>
 
 
-<script>
-    // 이미지 클릭 시 또는 더보기 클릭 시 오버레이 생성
-    function openOverlay(imageId, hashtags) {
-        var overlay = document.getElementById('overlay');
-        var overlayImg = document.createElement('img');
-        overlayImg.classList.add('overlay-img');
-        overlay.appendChild(overlayImg);
-        var overlayHashtags = document.createElement('div');
-        overlayHashtags.classList.add('overlay-hashtags');
-        overlay.appendChild(overlayHashtags);
 
-        // 가져온 해시태그를 overlayHashtags에 추가
-        overlayHashtags.innerHTML = '';
-        hashtags.forEach(function (hashtag) {
-            var span = document.createElement('span');
-            span.textContent = hashtag;
-            overlayHashtags.appendChild(span);
-        });
-
-        // 이미지 클릭 시 확대되도록 하는 코드
-        var images = document.querySelectorAll('.img_box[data-image-id="' + imageId + '"] img');
-        images.forEach(function (img) {
-            img.addEventListener('click', function (event) {
-                var clickedImg = event.target;  // 클릭된 이미지 엘리먼트
-                overlayImg.src = clickedImg.src;
-                overlay.style.display = 'flex';
-
-                var downloadButton = document.getElementById('download-button');
-                downloadButton.setAttribute('data-image-id', imageId);
-            });
-        });
-    }
-
-    // 이미지 클릭 이벤트 함수
-    function imageClickEvent(imageId) {
-        var imageBox = document.querySelector('.img_box[data-image-id="' + imageId + '"]');
-        var hashtags = imageBox.dataset.hashtags.split(',');
-        openOverlay(imageId, hashtags);
-    }
-
-    // 더보기 클릭 이벤트 함수
-    function toggleHashtags(element, imageId) {
-        var hashtagsList = element.previousElementSibling;
-        var isHidden = hashtagsList.classList.toggle('collapsed');
-
-        // 토글 상태에 따라 더보기 또는 접기 텍스트 변경
-        element.textContent = isHidden ? '더보기' : '접기';
-
-        // 더보기 클릭 시 이미지 클릭 이벤트 발생
-        if (!isHidden) {
-            imageClickEvent(imageId);
-        }
-    }
-
-    function filterImages(category) {
-        var images = document.querySelectorAll('.img_box');
-        images.forEach(function (img) {
-            var imgCategory = img.getAttribute('data-category');
-            var imgSrc = img.querySelector('img').getAttribute('src');
-
-            if (category === 'all' || (category === 'gif' && imgSrc.endsWith('.gif')) || (category === 'normal' && !imgSrc.endsWith('.gif'))) {
-                img.style.display = 'block';
-            } else {
-                img.style.display = 'none';
-            }
-        });
-    }
-</script>
 
 <script>
         // CSRF 토큰을 가져오는 함수
