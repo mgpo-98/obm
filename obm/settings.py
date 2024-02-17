@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-1325!noi(nb)%#07umlfzm!7+pg7h$atb&d8(m5-ci$nomgm#$'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# 아래가 배포용
+#DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-# ALLOWED_HOSTS = ['.pythonanywhere.com']
+#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.pythonanywhere.com']
 
 
 # 파일 유형 설정
