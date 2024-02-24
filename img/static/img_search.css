@@ -154,7 +154,10 @@ body {
     margin-top: 5px;
     display: flex; /* 해시태그를 가로로 나열하기 위해 추가 */
     max-height: 30px; /* 높이를 최대 30px로 제한 */
-    
+    /* 폰트 */
+    font-family: "Noto Serif KR", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 .hashtags p {
     margin: 0; /* 기본 마진 제거 */

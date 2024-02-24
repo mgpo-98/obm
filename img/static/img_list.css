@@ -172,6 +172,13 @@ body {
     display: flex; /* 해시태그를 가로로 나열하기 위해 추가 */
     max-height: 80px; /* 높이를 최대 30px로 제한 */
    /*  overflow: hidden; /* 넘치는 내용을 감추기 */
+
+/* 폰트 */
+    font-family: "Noto Serif KR", serif;
+    font-weight: 400;
+    font-style: normal;
+
+  
     
 }
 .hashtags p {
