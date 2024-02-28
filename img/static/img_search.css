@@ -216,3 +216,7 @@ body {
     cursor: pointer;
     color: blue; /* 더보기 텍스트 스타일링 (원하는 색상으로 변경) */
 }
+.overlay-hashtags {
+    margin-top: 20px;
+    color: #fff; /* 해시태그 색상을 흰색으로 설정 */
+}

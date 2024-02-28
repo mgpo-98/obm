@@ -33,8 +33,11 @@
                 <img src="{{ image.image.url }}" alt="Image">
             </div>
             <div class="hashtags">
-                <p>{% for hashtag in image.hashtags.all %}
-                    <span>{{ hashtag.name }} </span>
+                <p class="hashtags-list">
+                    {% for hashtag in image.hashtags.all %}
+                    <a href="{% url 'img:search_images' %}?search={{ hashtag.name|urlencode }}&items_per_page={{ items_per_page }}">
+                        <span>{{ hashtag.name }} </span>
+                    </a>    
                 {% endfor %}</p>
             </div>
             
