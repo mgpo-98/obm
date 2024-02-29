@@ -82,7 +82,7 @@
     rank.forEach(function (item, index) {
       const arrow = get_arrow(item.prev_rank, item.rank);
       
-      const listItem = $(`<li>${arrow} ${index + 1}. ${item.query} (${item.search_count}회)${item.new}</li>`);
+      const listItem = $(`<li><a href="/img/search/?search=${item.query}">${arrow} ${index + 1}. ${item.query} (${item.search_count}회)${item.new}</a></li>`);
       searchRankContainer.append(listItem);
     });
     if (period === 'daily') {
