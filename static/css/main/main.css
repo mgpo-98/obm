@@ -6,10 +6,10 @@
   font-family: "Noto Serif KR", serif;
   font-weight: 400;
   font-style: normal;
-
+ 
 }
-#searchRank  li{
-  text-decoration: none;
+a{
+  text-decoration: none; 
   color: black;
 }
 h2{
