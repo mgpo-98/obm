@@ -24,11 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1325!noi(nb)%#07umlfzm!7+pg7h$atb&d8(m5-ci$nomgm#$'
 
 # 아래가 배포용
-#DEBUG = True
-DEBUG = False
+DEBUG = True
 
-#ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['.pythonanywhere.com']
+#DEBUG = False
+
+ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['.pythonanywhere.com']
 
 
 # 파일 유형 설정
