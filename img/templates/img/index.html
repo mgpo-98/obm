@@ -122,17 +122,18 @@
         hashtagsInput.addEventListener('keydown', function(event) {
             const hashtagsInput = document.getElementById('hashtags-input');
             
-            if (event.key === 'Enter' && hashtagsInput.value.trim() !== "") {
+            if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault();
-                const hashtag = hashtagsInput.value.trim();
-                addHashtagToInput(hashtag);
-            } else if (event.key === ' ' && hashtagsInput.value.trim() !== "") {
-                // 수정된 부분: 스페이스바 입력 시도 해시태그 추가
-                event.preventDefault();
-                const hashtag = hashtagsInput.value.trim();
-                addHashtagToInput(hashtag);
+                const trimmedValue = hashtagsInput.value.trim();
+                
+                if (trimmedValue !== "") {
+                    // 엔터 키 또는 스페이스바 입력 시 해시태그 추가
+                    const hashtag = trimmedValue;
+                    addHashtagToInput(hashtag);
+                }
             }
         });
+        
     
         const uploadForm = document.getElementById('image-upload-form');
         
