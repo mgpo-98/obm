@@ -119,19 +119,6 @@
         openOverlay(imageId, hashtags);
     }
 
-    // 더보기 클릭 이벤트 함수
-    function toggleHashtags(element, imageId) {
-        var hashtagsList = element.previousElementSibling;
-        var isHidden = hashtagsList.classList.toggle('collapsed');
-
-        // 토글 상태에 따라 더보기 또는 접기 텍스트 변경
-        element.textContent = isHidden ? '더보기' : '접기';
-
-        // 더보기 클릭 시 이미지 클릭 이벤트 발생
-        if (!isHidden) {
-            imageClickEvent(imageId);
-        }
-    }
 
     function filterImages(category) {
         var images = document.querySelectorAll('.img_box');

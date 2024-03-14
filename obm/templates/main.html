@@ -127,6 +127,9 @@ document.addEventListener('DOMContentLoaded', function () {
   var overlayImg = document.createElement('img');
   overlayImg.classList.add('overlay-img');
   overlay.appendChild(overlayImg);
+  var overlayHashtags = document.createElement('div');
+  overlayHashtags.classList.add('overlay-hashtags');
+  overlay.appendChild(overlayHashtags);
 
   // 이미지 클릭 시 확대되도록 하는 코드
   var images = document.querySelectorAll('.card img');
@@ -141,6 +144,17 @@ document.addEventListener('DOMContentLoaded', function () {
   
           var downloadButton = document.getElementById('download-button');
           downloadButton.setAttribute('data-image-id', imageId);
+          // 가져온 해시태그를 overlayHashtags에 추가
+          overlayHashtags.innerHTML = '';
+          hashtags.forEach(function (hashtag) {
+              var span = document.createElement('span');
+              span.textContent = hashtag;
+              overlayHashtags.appendChild(span);
+      });
+          // 이미지 아래에 정보를 표시하는 코드
+          var overlayContent = document.querySelector('.overlay-content');
+          overlayContent.appendChild(overlayImg);
+          overlayContent.appendChild(overlayHashtags);
       });
   });
   
