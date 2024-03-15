@@ -75,13 +75,6 @@ def main(request):
     return render(request, 'main.html', context)
 
 
-def get_arrow(prev_rank, current_rank):
-    if prev_rank < current_rank:
-        return '↑';  # 상승 화살표
-    elif prev_rank > current_rank:
-        return '↓';  # 하락 화살표
-    else:
-        return '-';  # 변동 없음
 
 
 @csrf_exempt    
