@@ -122,12 +122,12 @@
         hashtagsInput.addEventListener('keydown', function(event) {
             const hashtagsInput = document.getElementById('hashtags-input');
             
-            if (event.key === 'Enter' || event.key === ' ') {
+            if (event.key === 'Enter' ) {
                 event.preventDefault();
                 const trimmedValue = hashtagsInput.value.trim();
                 
                 if (trimmedValue !== "") {
-                    // 엔터 키 또는 스페이스바 입력 시 해시태그 추가
+       
                     const hashtag = trimmedValue;
                     addHashtagToInput(hashtag);
                 }
