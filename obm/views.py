@@ -68,7 +68,7 @@ def get_popular_search_rank(request):
     return JsonResponse({'rank': rank_data, 'period': period})
 
 def main(request):
-    # popular_images = Image.objects.order_by('-download_count')[:6]
+    
     popular_images = Image.objects.exclude(download_count=0).order_by('-download_count')[:6] 
 
     context = {'popular_images': popular_images}
