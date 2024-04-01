@@ -117,7 +117,7 @@
         var imageBox = document.querySelector('.img_box[data-image-id="' + imageId + '"]');
         var hashtags = imageBox.dataset.hashtags.split(',');
         openOverlay(imageId, hashtags);
-    }
+    
         // 공유하기 버튼 생성
         var shareButton = document.createElement('button');
         shareButton.textContent = '공유하기';
@@ -135,7 +135,7 @@
                 console.error('이미지 주소 복사 실패:', error);
             });
         });
-
+    }
 
     function filterImages(category) {
         var images = document.querySelectorAll('.img_box');
