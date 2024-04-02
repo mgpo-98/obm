@@ -233,3 +233,14 @@ body {
     cursor: pointer;
     color: blue; /* 더보기 텍스트 스타일링 (원하는 색상으로 변경) */
 }
+/* 이미지 박스 내의 공유하기 버튼 스타일 */
+.img_box button.share-button {
+    display: block;
+    margin-top: 10px; /* 이미지와 버튼 사이의 간격 조정 */
+    background-color: #4CAF50; /* 배경색 설정 */
+    color: white; /* 텍스트 색상 설정 */
+    border: none; /* 테두리 제거 */
+    padding: 10px 20px; /* 내부 여백 설정 */
+    font-size: 16px; /* 폰트 크기 설정 */
+    cursor: pointer; /* 커서 스타일 설정 */
+}

@@ -124,7 +124,8 @@
         shareButton.classList.add('share-button');
         shareButton.setAttribute('data-image-url', imageBox.querySelector('img').src);
         imageBox.appendChild(shareButton);
-        
+        console.log(imageBox)
+    
         // 공유하기 버튼 클릭 이벤트 추가
         shareButton.addEventListener('click', function() {
             var imageUrl = this.getAttribute('data-image-url');
