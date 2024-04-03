@@ -233,6 +233,7 @@ body {
     cursor: pointer;
     color: blue; /* 더보기 텍스트 스타일링 (원하는 색상으로 변경) */
 }
+
 /* 이미지 박스 내의 공유하기 버튼 스타일 */
 .img_box button.share-button {
     display: block;

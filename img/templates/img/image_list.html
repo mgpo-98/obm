@@ -42,6 +42,7 @@
                     </p>
                 </div>
             </div>
+            <button class="share-button" onclick="shareImage('{{ image.image.url }}')">공유하기</button>
         </li>
         {% empty %}
         <p>등록된 이미지가 없습니다.</p>
@@ -80,6 +81,17 @@
 
 
 <script>
+        // 이미지 공유하기 함수
+    function shareImage(imageUrl) {
+        // 이미지 URL을 클립보드에 복사
+        navigator.clipboard.writeText(imageUrl).then(function() {
+            alert('이미지가 클립보드에 복사되었습니다.');
+        }).catch(function(error) {
+            console.error('이미지 복사 실패:', error);
+        });
+    }
+
+
     // 이미지 클릭 시 또는 더보기 클릭 시 오버레이 생성
     function openOverlay(imageId, hashtags) {
         var overlay = document.getElementById('overlay');
@@ -117,23 +129,6 @@
         var imageBox = document.querySelector('.img_box[data-image-id="' + imageId + '"]');
         var hashtags = imageBox.dataset.hashtags.split(',');
         openOverlay(imageId, hashtags);
-    // 공유하기 버튼 생성
-    var shareButton = document.createElement('button');
-    shareButton.textContent = '공유하기';
-    shareButton.classList.add('share-button');
-    shareButton.setAttribute('data-image-url', imageBox.querySelector('img').src);
-    imageBox.appendChild(shareButton);
-    
-    // 공유하기 버튼 클릭 이벤트 추가
-    shareButton.addEventListener('click', function() {
-        var imageUrl = this.getAttribute('data-image-url');
-        // 이미지 주소를 클립보드에 복사
-        navigator.clipboard.writeText(imageUrl).then(function() {
-            alert('이미지가 클립보드에 복사되었습니다.');
-        }).catch(function(error) {
-            console.error('이미지 복사 실패:', error);
-        });
-    });
 }
     
 
