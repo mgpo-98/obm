@@ -244,3 +244,23 @@ body {
     font-size: 16px; /* 폰트 크기 설정 */
     cursor: pointer; /* 커서 스타일 설정 */
 }
+.share-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.img_box {
+    position: relative; /* 이미지 상자의 위치 지정 */
+}
+
+.share-button {
+    position: absolute; /* 버튼을 이미지 상자에 상대적으로 배치 */
+    top: 10px; /* 버튼의 상단 여백 */
+    right: 10px; /* 버튼의 오른쪽 여백 */
+    z-index: 1; /* 이미지 위에 표시되도록 설정 */
+}

@@ -31,7 +31,7 @@
 
             <div>
                 <img src="{{ image.image.url }}" alt="Image">
-
+               
                 <div class="hashtags">
                     <p class="hashtags-list">
                         {% for hashtag in image.hashtags.all %}
@@ -117,26 +117,25 @@
         var imageBox = document.querySelector('.img_box[data-image-id="' + imageId + '"]');
         var hashtags = imageBox.dataset.hashtags.split(',');
         openOverlay(imageId, hashtags);
+    // 공유하기 버튼 생성
+    var shareButton = document.createElement('button');
+    shareButton.textContent = '공유하기';
+    shareButton.classList.add('share-button');
+    shareButton.setAttribute('data-image-url', imageBox.querySelector('img').src);
+    imageBox.appendChild(shareButton);
     
-        // 공유하기 버튼 생성
-        var shareButton = document.createElement('button');
-        shareButton.textContent = '공유하기';
-        shareButton.classList.add('share-button');
-        shareButton.setAttribute('data-image-url', imageBox.querySelector('img').src);
-        imageBox.appendChild(shareButton);
-        console.log(imageBox)
-    
-        // 공유하기 버튼 클릭 이벤트 추가
-        shareButton.addEventListener('click', function() {
-            var imageUrl = this.getAttribute('data-image-url');
-            // 클립보드에 이미지 URL 복사하기
-            navigator.clipboard.writeText(imageUrl).then(function() {
-                alert('이미지 주소가 복사되었습니다.');
-            }).catch(function(error) {
-                console.error('이미지 주소 복사 실패:', error);
-            });
+    // 공유하기 버튼 클릭 이벤트 추가
+    shareButton.addEventListener('click', function() {
+        var imageUrl = this.getAttribute('data-image-url');
+        // 이미지 주소를 클립보드에 복사
+        navigator.clipboard.writeText(imageUrl).then(function() {
+            alert('이미지가 클립보드에 복사되었습니다.');
+        }).catch(function(error) {
+            console.error('이미지 복사 실패:', error);
         });
-    }
+    });
+}
+    
 
     function filterImages(category) {
         var images = document.querySelectorAll('.img_box');
