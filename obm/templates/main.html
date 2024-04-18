@@ -89,34 +89,7 @@
   // 초기에 전체 순위를 보여줌
   updateSearchRank('overall', 'searchRank');
 
-  // 이전 순위와 현재 순위를 비교하여 애니메이션 효과 적용
-function updateRankAnimation(prevRank, currentRank, searchQuery) {
-  const rankElement = document.querySelector(`#rank-${currentRank}`);
-  if (!rankElement) return;
-
-  if (prevRank > currentRank) {
-      // 현재 순위가 이전 순위보다 낮을 경우, 위로 이동하는 애니메이션 적용
-      rankElement.style.transition = 'transform 0.5s ease';
-      rankElement.style.transform = 'translateY(-100%)';
-  } else if (prevRank < currentRank) {
-      // 현재 순위가 이전 순위보다 높을 경우, 아래로 이동하는 애니메이션 적용
-      rankElement.style.transition = 'transform 0.5s ease';
-      rankElement.style.transform = 'translateY(100%)';
-  } else {
-      // 순위 변동이 없는 경우, 애니메이션 없이 원래 위치로 복원
-      rankElement.style.transition = 'none';
-      rankElement.style.transform = 'translateY(0)';
-  }
-}
-
-// 순위가 변동될 때마다 호출되는 함수
-function updateSearchRank(rankChanges) {
-  // rankChanges는 순위 변동 정보가 담긴 객체 배열입니다.
-  rankChanges.forEach(({ prevRank, currentRank, searchQuery }) => {
-      updateRankAnimation(prevRank, currentRank, searchQuery);
-  });
-}
-
+  
 </script>
 
 <script>
