@@ -170,6 +170,20 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+function get_arrow(prev_rank, current_rank) {
+  if (prev_rank === 0 && current_rank === 0) {
+      return '';  // 변동 없음
+  }
+
+  if (prev_rank < current_rank) {
+      return '↑';  // 상승 화살표
+  } else if (prev_rank > current_rank) {
+      return '↓';  // 하락 화살표
+  } else {
+      return '';  // 변동 없음
+  }
+}
+
 </script>
 
 {% endblock content %}

@@ -87,3 +87,10 @@ def download_image(request, image_id):
     image.save()
 
     return JsonResponse({'message': '다운로드 성공', 'download_count': image.download_count})
+def get_arrow(prev_rank, current_rank):
+    if prev_rank == current_rank:
+        return ''  # 변동 없음
+    elif prev_rank < current_rank:
+        return '↑'  # 상승 화살표
+    else:
+        return '↓'  # 하락 화살표

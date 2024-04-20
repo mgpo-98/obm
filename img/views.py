@@ -62,6 +62,7 @@ def image_list(request):
         'image_items': image_items, 
         'items_per_page': items_per_page
         }
+    
     return render(request, 'img/image_list.html', context)
 
 def search_images(request):
@@ -103,6 +104,7 @@ def search_images(request):
         .annotate(search_count=Count('query'))
         .order_by('-search_count')[:10]
     )
+        
     images = Image.objects.filter(hashtags__name__icontains=query)  # 검색어를 포함하는 이미지를 필터링
     print(paginator )
     context ={
@@ -112,6 +114,8 @@ def search_images(request):
         'image_items': image_items, 
         'items_per_page': items_per_page
         }
+    print(items_per_page)
+    print(image_items)
     return render(request, 'img/search_results.html', context)
 
 @require_POST
