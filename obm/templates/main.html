@@ -68,10 +68,10 @@
     const searchRankContainer = $(`#${containerId}`);
     searchRankContainer.empty();
     rank.forEach(function (item, index) {
+      const isNew = item.new ? 'new' : '';
       const arrow = get_arrow(item.prev_rank, item.rank);
-      
-      const listItem = $(`<li><a href="/img/search/?search=${item.query}">${arrow} ${index + 1}. ${item.query} (${item.search_count}회)${item.new}</a></li>`);
-      searchRankContainer.append(listItem);
+      const listItem = $(`<li><a href="/img/search/?search=${item.query}">${arrow} ${index + 1}. ${item.query} (${item.search_count}회)${isNew}</a></li>`);
+        searchRankContainer.append(listItem);
     });
     if (period === 'daily') {
       // 일간 처리: 예를 들어, 일간 순위 업데이트 후 어떤 추가 처리를 할 경우

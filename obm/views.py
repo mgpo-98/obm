@@ -12,10 +12,10 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 
 def get_start_of_week(date):
-    # 주어진 날짜의 요일 (0: 월요일, 1: 화요일, ..., 6: 일요일)
+   
     today_weekday = date.weekday()
 
-    # 일주일 간격의 시작일 계산 (월요일 00:00:00 기준)
+    # 일주일 간격의 시작일 계산 
     start_of_week = date - timedelta(days=today_weekday, hours=date.hour, minutes=date.minute, seconds=date.second, microseconds=date.microsecond)
 
     return start_of_week
@@ -26,24 +26,27 @@ def get_popular_search_rank(request):
     now = timezone.now()
 
     print(period)
+    new_search_period = timedelta(hours=1)
     # period에 따라 필터링
     if period == 'daily':
+        
         field_name = 'daily_rank'
-        # 당일의 시작 시간 (00:00:00)
+        # 당일의 시작 시간 
         start_date = datetime(now.year, now.month, now.day, 0, 0, 0)
-        # 당일의 종료 시간 (23:59:59)
+        start_date = timezone.now() - new_search_period
+        # 당일의 종료 시간 
         end_date = datetime(now.year, now.month, now.day, 23, 59, 59)
     elif period == 'weekly':
         field_name = 'weekly_rank'
-        # 주어진 날짜의 주의 시작 날짜 (월요일을 시작으로 한다고 가정)
+        # 주어진 날짜의 주의 시작 날짜 
         start_date = get_start_of_week(now)
-        # 주의 시작 날짜의 종료 시간 (23:59:59)
+        # 주의 시작 날짜의 종료 시간 
         end_date = datetime(now.year, now.month, now.day, 23, 59, 59)
     else:
         field_name = 'overall_rank'
         # 최초 검색 이후의 날짜 및 시간 (전체 기간)
         start_date = SearchHistory.objects.aggregate(Min('search_time'))['search_time__min']
-        # 현재 날짜의 종료 시간 (23:59:59)
+        # 현재 날짜의 종료
         end_date = datetime(now.year, now.month, now.day, 23, 59, 59)
 
     search_history = (
@@ -53,9 +56,11 @@ def get_popular_search_rank(request):
         .annotate(search_count=Count('query'))
         .order_by('-search_count')[:10])
     
-    
+    new_search_terms = set()
     rank_data = [{'query': item['query'], 'rank': item[field_name], 'search_count': item['search_count']} for item in search_history]
      # 이전 검색어 순위 가져오기
+    for item in rank_data:
+        item['new'] = 'new' if item['query'] in new_search_terms else ''
     prev_search_rank = request.session.get('prev_search_rank', {})
        # 검색어 순위 변동 체크 및 저장
     for item in rank_data:
