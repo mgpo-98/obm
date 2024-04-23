@@ -68,8 +68,13 @@
     const searchRankContainer = $(`#${containerId}`);
     searchRankContainer.empty();
     rank.forEach(function (item, index) {
+      var prevRank = 0; // 적절한 값으로 설정
+      var currentRank = 0; // 적절한 값으로 설정
       const isNew = item.new ? 'new' : '';
+      console.log('새로운');
+      console.log(isNew);
       const arrow = get_arrow(item.prev_rank, item.rank);
+      console.log(item.prev_rank);
       const listItem = $(`<li><a href="/img/search/?search=${item.query}">${arrow} ${index + 1}. ${item.query} (${item.search_count}회)${isNew}</a></li>`);
         searchRankContainer.append(listItem);
     });
