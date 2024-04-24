@@ -45,22 +45,21 @@
 </div>
 
 <script>
-  function updateSearchRank(period, containerId) {
-    $.ajax({
-      url: `/get_popular_search_rank/?period=${period}`,
-      method: 'GET',
-      success: function (data) {
-        console.log(containerId);
-      
-        updateRankList(data.rank, containerId, period);
-      },
-      error: function () {
-        console.error(`검색어 순위(${period})를 가져오는 중 오류가 발생했습니다.`);
-      }
-    });
+ 
+
+  function get_arrow(prev_rank, current_rank) {
+    if (prev_rank === 0 && current_rank === 0) {
+        return '';  // 변동 없음
+    }
+  
+    if (prev_rank < current_rank) {
+        return '↑';  // 상승 화살표
+    } else if (prev_rank > current_rank) {
+        return '↓';  // 하락 화살표
+    } else {
+        return '';  // 변동 없음
+    }
   }
-
-
 
   function updateRankList(rank, containerId, period) {
     console.log('period',period);
@@ -74,7 +73,7 @@
       console.log('새로운');
       console.log(isNew);
       const arrow = get_arrow(item.prev_rank, item.rank);
-      console.log(item.prev_rank);
+      console.log(item.rank);
       const listItem = $(`<li><a href="/img/search/?search=${item.query}">${arrow} ${index + 1}. ${item.query} (${item.search_count}회)${isNew}</a></li>`);
         searchRankContainer.append(listItem);
     });
@@ -89,6 +88,20 @@
       console.log('Overall ranking updated.');
     }
     
+  }
+  function updateSearchRank(period, containerId) {
+    $.ajax({
+      url: `/get_popular_search_rank/?period=${period}`,
+      method: 'GET',
+      success: function (data) {
+        console.log(containerId);
+      
+        updateRankList(data.rank, containerId, period);
+      },
+      error: function () {
+        console.error(`검색어 순위(${period})를 가져오는 중 오류가 발생했습니다.`);
+      }
+    });
   }
   
   // 초기에 전체 순위를 보여줌
@@ -175,19 +188,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-function get_arrow(prev_rank, current_rank) {
-  if (prev_rank === 0 && current_rank === 0) {
-      return '';  // 변동 없음
-  }
 
-  if (prev_rank < current_rank) {
-      return '↑';  // 상승 화살표
-  } else if (prev_rank > current_rank) {
-      return '↓';  // 하락 화살표
-  } else {
-      return '';  // 변동 없음
-  }
-}
 
 </script>
 

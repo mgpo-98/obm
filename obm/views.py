@@ -22,14 +22,13 @@ def get_start_of_week(date):
 
 def get_popular_search_rank(request):
     period = request.GET.get('period', 'overall')
- # 현재 날짜 및 시간
+    # 현재 날짜 및 시간
     now = timezone.now()
 
-    print(period)
     new_search_period = timedelta(hours=1)
+
     # period에 따라 필터링
     if period == 'daily':
-        
         field_name = 'daily_rank'
         # 당일의 시작 시간 
         start_date = datetime(now.year, now.month, now.day, 0, 0, 0)
@@ -55,22 +54,48 @@ def get_popular_search_rank(request):
         .values('query', field_name)
         .annotate(search_count=Count('query'))
         .order_by('-search_count')[:10])
-    
+
     new_search_terms = set()
-    rank_data = [{'query': item['query'], 'rank': item[field_name], 'search_count': item['search_count']} for item in search_history]
-     # 이전 검색어 순위 가져오기
-    for item in rank_data:
-        item['new'] = 'new' if item['query'] in new_search_terms else ''
+    rank_data = []
+
+    # 이전 검색어 순위 가져오기
     prev_search_rank = request.session.get('prev_search_rank', {})
-       # 검색어 순위 변동 체크 및 저장
-    for item in rank_data:
-        prev_rank = prev_search_rank.get(item['query'], 0)
-        item['arrow'] = get_arrow(prev_rank, item['rank'])
-        item['new'] = '' if prev_rank == 0 else ''
-    # 현재 검색어 순위를 이전 순위로 저장
-    request.session['prev_search_rank'] = {item['query']: item['rank'] for item in rank_data}
+
+    for item in search_history:
+        rank = item[field_name]
+        query = item['query']
+        search_count = item['search_count']
+        
+        # 새로운 검색어인지 확인하고 new_search_terms에 추가
+        if query not in prev_search_rank:
+            new_search_terms.add(query)
+        
+        # 새로운 검색어인 경우 new 표시
+        new = 'new' if query in new_search_terms else ''
+        
+        # 이전 순위 가져오기
+        prev_rank = prev_search_rank.get(query, 0)
+        
+        # 변동 화살표 구하기
+        arrow = get_arrow(prev_rank, rank)
+        
+        # 현재 검색어를 이전 순위로 저장
+        prev_search_rank[query] = rank
+        
+        # 랭크 데이터에 추가
+        rank_data.append({
+            'query': query,
+            'rank': rank,
+            'search_count': search_count,
+            'new': new,
+            'arrow': arrow
+        })
+    
+    # 현재 검색어 순위를 세션에 저장
+    request.session['prev_search_rank'] = prev_search_rank
 
     return JsonResponse({'rank': rank_data, 'period': period})
+
 
 def main(request):
     
