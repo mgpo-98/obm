@@ -67,8 +67,8 @@
     const searchRankContainer = $(`#${containerId}`);
     searchRankContainer.empty();
     rank.forEach(function (item, index) {
-      var prevRank = 0; // 적절한 값으로 설정
-      var currentRank = 0; // 적절한 값으로 설정
+      var prevRank = 0;
+      var currentRank = 0; 
       const isNew = item.new ? 'new' : '';
       console.log('새로운');
       console.log(isNew);
@@ -78,13 +78,13 @@
         searchRankContainer.append(listItem);
     });
     if (period === 'daily') {
-      // 일간 처리: 예를 들어, 일간 순위 업데이트 후 어떤 추가 처리를 할 경우
+      // 일간 처리
       console.log('Daily ranking updated.');
     } else if (period === 'weekly') {
-      // 주간 처리: 예를 들어, 주간 순위 업데이트 후 어떤 추가 처리를 할 경우
+      // 주간 처리
       console.log('Weekly ranking updated.');
     } else {
-      // 전체 처리: 예를 들어, 전체 순위 업데이트 후 어떤 추가 처리를 할 경우
+      // 전체 처리
       console.log('Overall ranking updated.');
     }
     
@@ -100,6 +100,7 @@
   function updateDataBasedOnUserClick() {
       if (targetElementId) {
           updateSearchRank('daily', targetElementId); // 사용자가 클릭한 요소의 ID를 기반으로 데이터 업데이트
+        
       }
   }
   
@@ -109,7 +110,8 @@
       updateSearchRank('overall', 'searchRank');
       setInterval(updateDataBasedOnUserClick, 5000); // 5초마다 사용자가 클릭한 요소를 기반으로 데이터 업데이트
   });
-  
+ 
+  console.log( setInterval);
 var currentPeriod = 'overall';
   function updateSearchRank(period, containerId) {
     $.ajax({
