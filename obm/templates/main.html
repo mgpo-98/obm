@@ -91,10 +91,6 @@
   }
   var targetElementId = null;
 
-  // 사용자가 특정 요소를 클릭했을 때 해당 요소의 ID를 변수에 저장
-  $('.clickable-element').click(function() {
-      targetElementId = $(this).attr('id');
-  });
   
   // 사용자가 클릭한 요소를 기반으로 데이터 업데이트
   function updateDataBasedOnUserClick() {
@@ -108,7 +104,15 @@
   $(document).ready(function() {
       // 초기에 전체 순위를 보여줌
       updateSearchRank('overall', 'searchRank');
-      setInterval(updateDataBasedOnUserClick, 5000); // 5초마다 사용자가 클릭한 요소를 기반으로 데이터 업데이트
+      $('.clickable-element').click(function() {
+        var clickedElementId = $(this).attr('id');
+        targetElementId = clickedElementId;
+        updateDataBasedOnUserClick(); // 사용자가 클릭한 요소에 기반하여 데이터 업데이트 실행
+    });
+     // 5초마다 전체 순위를 자동으로 업데이트
+     setInterval(function() {
+      updateSearchRank('overall', 'searchRank');
+  }, 5000);
   });
  
   console.log( setInterval);
