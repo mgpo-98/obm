@@ -13,6 +13,8 @@ from django.forms.models import model_to_dict
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
+import os
+from .ai_utils import generate_tags
 # Create your views here.
 
 def index(request):
@@ -127,3 +129,31 @@ def download_image(request, image_id):
     image.save()
 
     return JsonResponse({'message': '다운로드 성공', 'download_count': image.download_count})
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+import os
+
+@require_POST
+def generate_ai_hashtags(request):
+    """Generate AI-based hashtags for the uploaded image."""
+    image_file = request.FILES.get('image')
+    if not image_file:
+        return JsonResponse({'success': False, 'error': 'No image provided.'})
+
+    # Save the image temporarily
+    image_path = f'/tmp/{image_file.name}'
+    with open(image_path, 'wb') as f:
+        for chunk in image_file.chunks():
+            f.write(chunk)
+
+    try:
+        # Generate tags using the AI model
+        tags = generate_tags(image_path)
+        return JsonResponse({'success': True, 'tags': tags})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+    finally:
+        # Clean up the temporary file
+        os.remove(image_path)
+

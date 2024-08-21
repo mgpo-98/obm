@@ -18,10 +18,18 @@
 
     <!-- 파일 입력 필드 -->
     <input type="file" name="image" id="image-input" style="display: none;" onchange="handleFileSelect(event)" >
+
+    <!-- 해시태그 입력 필드 -->
     <div class="hashtag-btn">
         <div id="hashtags-display" class="hashtags-display"></div>
         <!-- 수정된 부분: 해시태그 입력창에 자동으로 # 추가 -->
         <input type="text" name="hashtags" id="hashtags-input" placeholder="#해시태그를 추가하세요">
+    </div>
+
+    <!-- AI 해시태그 추천 -->
+    <div id="ai-hashtags-container">
+        <h3>AI 해시태그 추천</h3>
+        <div id="ai-hashtags"></div>
     </div>
     <input type="submit" id="upload-button" value="이미지 업로드">
 </form> 
@@ -50,6 +58,7 @@
             document.getElementById('file-info').textContent = '';
         }
     }
+
     function handleFileSelect(event) {
         const files = event.target.files;
         console.log(files.length );
@@ -68,6 +77,39 @@
 
     function handleDragOver(event) {
         event.preventDefault();
+    }
+    
+    function fetchAIHashtags(file) {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        fetch('/img/generate_ai_hashtags/', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            const aiHashtagsDisplay = document.getElementById('ai-hashtags');
+            aiHashtagsDisplay.innerHTML = '';
+            if (data.success) {
+                data.tags.forEach(tag => {
+                    const tagElement = document.createElement('span');
+                    tagElement.textContent = `#${tag}`;
+                    tagElement.className = 'ai-hashtag';
+                    tagElement.addEventListener('click', function() {
+                        addHashtagToInput(`#${tag}`);
+                    });
+                    aiHashtagsDisplay.appendChild(tagElement);
+                });
+            } else {
+                aiHashtagsDisplay.textContent = 'AI 해시태그를 생성할 수 없습니다.';
+            }
+        })
+        .catch(error => {
+            console.error('AI 해시태그 생성 중 오류 발생: ', error);
+            const aiHashtagsDisplay = document.getElementById('ai-hashtags');
+            aiHashtagsDisplay.textContent = 'AI 해시태그를 생성할 수 없습니다.';
+        });
     }
 
     document.addEventListener('DOMContentLoaded', function() {
