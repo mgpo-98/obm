@@ -13,8 +13,12 @@ from django.forms.models import model_to_dict
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
-import os
-from .ai_utils import generate_tags
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from . import ai_utils
+
 # Create your views here.
 
 def index(request):
@@ -134,26 +138,23 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import os
 
-@require_POST
+@csrf_exempt
 def generate_ai_hashtags(request):
-    """Generate AI-based hashtags for the uploaded image."""
-    image_file = request.FILES.get('image')
-    if not image_file:
-        return JsonResponse({'success': False, 'error': 'No image provided.'})
+    if request.method == 'POST':
+        if 'image' not in request.FILES:
+            return JsonResponse({'error': '이미지가 업로드되지 않았습니다.'}, status=400)
 
-    # Save the image temporarily
-    image_path = f'/tmp/{image_file.name}'
-    with open(image_path, 'wb') as f:
-        for chunk in image_file.chunks():
-            f.write(chunk)
+        uploaded_file = request.FILES['image']
+        image_path = default_storage.save('tmp_' + uploaded_file.name, ContentFile(uploaded_file.read()))
 
-    try:
-        # Generate tags using the AI model
-        tags = generate_tags(image_path)
-        return JsonResponse({'success': True, 'tags': tags})
-    except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)})
-    finally:
-        # Clean up the temporary file
-        os.remove(image_path)
-
+        try:
+            # AI 해시태그 생성
+            tags = ai_utils.generate_tags(default_storage.path(image_path))
+            return JsonResponse({'success': True, 'tags': tags})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+        finally:
+            # 임시 파일 삭제
+            if default_storage.exists(image_path):
+                default_storage.delete(image_path)
+    return JsonResponse({'error': '잘못된 요청입니다.'}, status=400)

@@ -14,6 +14,7 @@
     <div id="drop-area" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
         <img src="https://img.icons8.com/pastel-glyph/2x/image-file.png" alt="파일 아이콘" class="image">
         <span id="drop-text">이미지를 드래그하여 업로드하세요.</span>
+        <span id="file-info"></span>
     </div>
 
     <!-- 파일 입력 필드 -->
@@ -51,6 +52,9 @@
             document.getElementById('image-input').files = files;
             document.getElementById('drop-text').textContent = `${file.name} 파일이 선택되었습니다.`;
             document.getElementById('file-info').textContent = `선택된 파일: ${file.name}`;
+            
+            // 파일이 선택되면 AI 해시태그 생성 요청을 보냅니다.
+            fetchAIHashtags(file);
         }
         else {
             // 파일이 선택되지 않았을 때의 처리
@@ -67,6 +71,8 @@
             const file = files[0];
             document.getElementById('drop-text').textContent = `${file.name} 파일이 선택되었습니다.`;
             document.getElementById('file-info').textContent = `선택된 파일: ${file.name}`;
+            // 파일이 선택되면 AI 해시태그 생성 요청을 보냅니다.
+            fetchAIHashtags(file);
         }
         else {
             // 파일이 선택되지 않았을 때의 처리
@@ -80,12 +86,16 @@
     }
     
     function fetchAIHashtags(file) {
+        console.log('AI');
         const formData = new FormData();
         formData.append('image', file);
 
         fetch('/img/generate_ai_hashtags/', {
             method: 'POST',
             body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
         })
         .then(response => response.json())
         .then(data => {
