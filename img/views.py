@@ -18,6 +18,7 @@ from django.http import JsonResponse
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from . import ai_utils
+from googletrans import Translator
 
 # Create your views here.
 
@@ -134,9 +135,13 @@ def download_image(request, image_id):
 
     return JsonResponse({'message': '다운로드 성공', 'download_count': image.download_count})
 
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
-import os
+
+translator = Translator()
+
+def translate_tags(tags):
+    """Translate a list of tags from English to Korean."""
+    translations = translator.translate(tags, src='en', dest='ko')
+    return [translation.text for translation in translations]
 
 @csrf_exempt
 def generate_ai_hashtags(request):
@@ -150,7 +155,11 @@ def generate_ai_hashtags(request):
         try:
             # AI 해시태그 생성
             tags = ai_utils.generate_tags(default_storage.path(image_path))
-            return JsonResponse({'success': True, 'tags': tags})
+
+            # 영어 태그를 한국어로 번역
+            korean_tags = translate_tags(tags)
+            
+            return JsonResponse({'success': True, 'tags': korean_tags})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
         finally:
