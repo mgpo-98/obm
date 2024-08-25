@@ -139,43 +139,43 @@ def download_image(request, image_id):
 
 
 
-@csrf_exempt
-def generate_ai_hashtags(request):
-    if request.method == 'POST':
-        print('2')
-        if 'image' not in request.FILES:
-            return JsonResponse({'error': '이미지가 업로드되지 않았습니다.'}, status=400)
+# @csrf_exempt
+# def generate_ai_hashtags(request):
+#     if request.method == 'POST':
+#         print('2')
+#         if 'image' not in request.FILES:
+#             return JsonResponse({'error': '이미지가 업로드되지 않았습니다.'}, status=400)
 
-        uploaded_file = request.FILES['image']
-        image_path = default_storage.save('tmp_' + uploaded_file.name, ContentFile(uploaded_file.read()))
+#         uploaded_file = request.FILES['image']
+#         image_path = default_storage.save('tmp_' + uploaded_file.name, ContentFile(uploaded_file.read()))
 
-        try:
-            print('55')
-            # AI 해시태그 생성
-            tags = ai_utils.generate_tags(default_storage.path(image_path))
-            print(tags)
-            # 영어 태그를 한국어로 번역
-            print(translate_tags(tags))
-            korean_tags = translate_tags(tags)
-            print('korean_tags')
-            return JsonResponse({'success': True, 'tags': korean_tags})
-        except Exception as e:
-            print('77')
-            return JsonResponse({'error': str(e)}, status=500)
-        finally:
-            print('88')
-            # 임시 파일 삭제
-            if default_storage.exists(image_path):
-                default_storage.delete(image_path)
-    return JsonResponse({'error': '잘못된 요청입니다.'}, status=400)
+#         try:
+#             print('55')
+#             # AI 해시태그 생성
+#             tags = ai_utils.generate_tags(default_storage.path(image_path))
+#             print(tags)
+#             # 영어 태그를 한국어로 번역
+#             print(translate_tags(tags))
+#             korean_tags = translate_tags(tags)
+#             print('korean_tags')
+#             return JsonResponse({'success': True, 'tags': korean_tags})
+#         except Exception as e:
+#             print('77')
+#             return JsonResponse({'error': str(e)}, status=500)
+#         finally:
+#             print('88')
+#             # 임시 파일 삭제
+#             if default_storage.exists(image_path):
+#                 default_storage.delete(image_path)
+#     return JsonResponse({'error': '잘못된 요청입니다.'}, status=400)
 
-translator = Translator()
+# translator = Translator()
 
-def translate_tags(tags):
+# def translate_tags(tags):
     
-    print(tags)
-    """Translate a list of tags from English to Korean."""
-    translations = translator.translate(tags, src='en', dest='ko')
-    print(translations)
-    print(translator)
-    return [translation.text for translation in translations]
+#     print(tags)
+#     """Translate a list of tags from English to Korean."""
+#     translations = translator.translate(tags, src='en', dest='ko')
+#     print(translations)
+#     print(translator)
+#     return [translation.text for translation in translations]
