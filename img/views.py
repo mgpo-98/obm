@@ -155,6 +155,7 @@ def generate_ai_hashtags(request):
             tags = ai_utils.generate_tags(default_storage.path(image_path))
             print(tags)
             # 영어 태그를 한국어로 번역
+            print(translate_tags(tags))
             korean_tags = translate_tags(tags)
             print('korean_tags')
             return JsonResponse({'success': True, 'tags': korean_tags})
