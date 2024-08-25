@@ -13,12 +13,12 @@ from django.forms.models import model_to_dict
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
-from . import ai_utils
-from googletrans import Translator
+# from django.views.decorators.csrf import csrf_exempt
+# from django.http import JsonResponse
+# from django.core.files.storage import default_storage
+# from django.core.files.base import ContentFile
+# from . import ai_utils
+# from googletrans import Translator
 
 # Create your views here.
 
