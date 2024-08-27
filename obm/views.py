@@ -86,9 +86,10 @@ def get_popular_search_rank(request):
         rank_data.append({
             'query': query,
             'rank': rank,
-            'search_count': search_count,
-            'new': new,
-            'arrow': arrow
+            'search_count': item['search_count'],
+            'new': 'new' if query not in prev_search_rank else '',
+            'arrow': arrow,
+            'prev_rank': prev_rank  # 이전 랭크 추가
         })
     
     # 현재 검색어 순위를 세션에 저장

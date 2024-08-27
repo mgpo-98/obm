@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     
     "imagekit",
     'img',
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

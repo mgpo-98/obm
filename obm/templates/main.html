@@ -67,13 +67,11 @@
     const searchRankContainer = $(`#${containerId}`);
     searchRankContainer.empty();
     rank.forEach(function (item, index) {
-      var prevRank = 0;
-      var currentRank = 0; 
       const isNew = item.new ? 'new' : '';
       console.log('새로운');
       console.log(isNew);
       const arrow = get_arrow(item.prev_rank, item.rank);
-      console.log(item.rank);
+      console.log(item);
       console.log(item.prev_rank);
       const listItem = $(`<li><a href="/img/search/?search=${item.query}">${arrow} ${index + 1}. ${item.query} (${item.search_count}회)${isNew}</a></li>`);
         searchRankContainer.append(listItem);
@@ -218,6 +216,23 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+// 클라이언트 측에서 rank를 관리하는 경우
+function updateRankList(rank, containerId, period) {
+  const searchRankContainer = $(`#${containerId}`);
+  searchRankContainer.empty();
+
+  rank.forEach(function (item, index) {
+      const prevRank = localStorage.getItem(item.query) || 0;
+      const currentRank = index + 1; // 현재 랭크 계산
+      const arrow = get_arrow(prevRank, currentRank);
+
+      const listItem = $(`<li><a href="/img/search/?search=${item.query}">${arrow} ${currentRank}. ${item.query} (${item.search_count}회)</a></li>`);
+      searchRankContainer.append(listItem);
+
+      // 현재 랭크를 로컬 저장소에 저장
+      localStorage.setItem(item.query, currentRank);
+  });
+}
 
 
 

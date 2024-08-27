@@ -22,6 +22,8 @@ from .views import get_popular_search_rank
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('img/', include('img.urls')),
+    path('accounts/', include('accounts.urls')),
+    
     path('', views.main, name = 'main'),
     path('get_popular_search_rank/', get_popular_search_rank, name='get_popular_search_rank'),
     path('download/<int:image_id>/', views.download_image, name='download_image'),
