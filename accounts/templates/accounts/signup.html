@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Sign Up</h2>
+<form method="POST" id="signup-form">
+  {% csrf_token %}
+  {{ form.username.label_tag }} {{ form.username }}<br>
+  {{ form.password1.label_tag }} {{ form.password1 }}<br>
+  {{ form.password2.label_tag }} {{ form.password2 }}<br>
+  
+  {{ form.email_local.label_tag }} 
+  <input type="text" name="email_local" id="id_email_local" required><span>@</span>
+  
+  <input type="text" name="email_domain" id="id_email_domain" required>
+  <select id="email_domain_select">
+      <option value="naver.com">naver.com</option>
+      <option value="gmail.com">gmail.com</option>
+      <option value="">Custom</option>
+  </select>
+  <button type="button" id="send-verification">인증하기</button><br>
+  
+  <label for="email_verification_code">인증 코드:</label>
+  <input type="text" id="email_verification_code" name="email_verification_code" required><br>
+  
+  {{ form.nickname.label_tag }} {{ form.nickname }}<br>
+  <button type="button" id="check-nickname">닉네임 중복 확인</button><br>
+  <button type="submit">Sign Up</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // 이메일 인증 요청
+        $('#send-verification').click(function() {
+            var emailLocal = $('#id_email_local').val();
+            var emailDomain = $('#id_email_domain').val();
+            var email = emailLocal + '@' + emailDomain;
+            $.ajax({
+                url: '{% url "accounts:send_verification_code" %}',
+                method: 'POST',
+                data: {
+                    'email': email,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(data) {
+                    if (data.success) {
+                        alert('인증 코드가 이메일로 전송되었습니다.');
+                    } else {
+                        alert('이메일 전송에 실패했습니다. 다시 시도해주세요.');
+                    }
+                }
+            });
+        });
+
+        // 닉네임 중복 확인
+        $('#check-nickname').click(function() {
+            var nickname = $('#id_nickname').val();
+            $.ajax({
+                url: '{% url "accounts:check_nickname" %}',
+                data: {'nickname': nickname},
+                dataType: 'json',
+                success: function(data) {
+                    if (data.is_taken) {
+                        alert('중복된 닉네임입니다.');
+                    } else {
+                        alert('사용 가능한 닉네임입니다.');
+                    }
+                }
+            });
+        });
+
+        // 이메일 도메인 선택
+        $('#email_domain_select').change(function() {
+            var selectedDomain = $(this).val();
+            if (selectedDomain) {
+                $('#id_email_domain').val(selectedDomain).prop('readonly', true);
+            } else {
+                $('#id_email_domain').val('').prop('readonly', false);
+            }
+        });
+    });
+</script>
+{% endblock %}
