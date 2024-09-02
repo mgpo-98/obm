@@ -57,6 +57,6 @@ def send_verification_code(request):
             [email], # 수신자 이메일 리스트
             fail_silently=False,
         )
-        
+        print(send_mail)
         return JsonResponse({'success': True})
     return JsonResponse({'success': False})
